@@ -11,9 +11,9 @@ https://docs.splunk.com/images/d/db/Prices.csv.zip <br>
 http://splk.it/f1data
 
 ## Data Load
-There are 4 indexes in this class: web, security, sales, network
-Pull data from https://docs.splunk.com/images/Tutorial/tutorialdata.zip
-Split the zip file into the access logs and the secure logs ans separate out the  vendors sales data.
+There are 4 indexes in this class: web, security, sales and network <br>
+Pull data from https://docs.splunk.com/images/Tutorial/tutorialdata.zip <br>
+Split the zip file into the access logs and the secure logs and separate out the vendors sales data. <br>
 
 Also pull data from http://splk.it/f1data. Only log file you want from this is linux_s_30DAY.log
 
