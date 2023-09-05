@@ -15,7 +15,6 @@ There are 4 indexes in this class: web, security, sales and network <br>
 Pull data from https://docs.splunk.com/images/Tutorial/tutorialdata.zip <br>
 Split the zip file into the access logs and the secure logs and separate out the vendors sales data. <br>
 
-Also pull data from http://splk.it/f1data. Only log file you want from this is linux_s_30DAY.log
 
 Other files to load are generated from python scripts
 
