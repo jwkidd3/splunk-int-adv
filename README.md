@@ -38,4 +38,6 @@ Load based on table below:
    |vendor_sales|vendors.csv|VendorID|
 
 
-   ***NOTE: on all exercises and demos you may have to adjust timeframe to see data depending on when the last time data generation took place
+   *** NOTE: on all exercises and demos you may have to adjust timeframe to see data depending on when the last time data generation took place
+
+   *** Remember, this is not a production environment. The UI for splunk changes on a semi regular basis and sometimes screenshots do not 100% match the product. Data for labs should be consistent but there are cicurmstanses where we will need to adapt an exercise based on data availability.
