@@ -22,8 +22,8 @@ Load based on table below:
 
 | Index |   Type |                    SourceType  |      host(s)    |    Source (File)			 |
 | ----- | ------ | -------------------------------| -------------| ----------------------|
-| Web		| Online Sales |		          access_combined	|	webserver|		access logs (3)   |
-| Security|	   Web Server		|            linux_secure	 |	  webserver	|	secure.log (3)  |
+| Web		| Online Sales |		          access_combined	|	segment in path 2|		access logs (3)   |
+| Security|	   Web Server		|            linux_secure	 |	  segment in path 2	|	secure.log (3)  |
 | Sales		 |    sales_entries |		        sales_entries |		  appserver |		sample_sales_entries_data.json  |
 | Sales		 |    retail_sales	|	          vendor_sales	|	  appserver |		vendor_sales.log  |
 | Network	|	   Web Security Appliance |	  cisco_wsa_squid |		webserver |		sample_cisco_wsa_sqid_data.json  |
