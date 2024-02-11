@@ -5,15 +5,9 @@
 
 2. Or you can run splunk in a Docker container (if you have docker on your machine): docker run -d -p 8000:8000 -e "SPLUNK_START_ARGS=--accept-license" --platform linux/amd64 -e "SPLUNK_PASSWORD=password" --name splunk splunk/splunk:latest
 
-### Original data sources:
-https://docs.splunk.com/images/Tutorial/tutorialdata.zip <br>
-https://docs.splunk.com/images/d/db/Prices.csv.zip <br>
-http://splk.it/f1data
 
 ## Data Load
-There are 4 indexes in this class: web, security, sales and network <br>
-Pull data from https://docs.splunk.com/images/Tutorial/tutorialdata.zip <br>
-Split the zip file into the access logs and the secure logs and separate out the vendors sales data. <br>
+Pull data from https://github.com/jwkidd3/splunk_int_adv_data <br>
 
 
 Other files to load are generated from python scripts
