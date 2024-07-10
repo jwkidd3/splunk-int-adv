@@ -1,0 +1,152 @@
+*****PLEASE NOTE: SPL that uses a sourcetype go log4j will not return any results. They are included here as examples of what you can do. Also, all access_combined sourcetypes should be changed to access_* if no results are returned
+
+index=main sourcetype=access_* | table _time, referer_domain, method, uri_path, status, JSESSIONID, useragent
+
+index=main sourcetype=access_combined | table *
+
+
+most accessed web pages
+sourcetype=access_combined index=main | top limit=20 uri_pathsourcetype=access_combined index=main | stats dc(uri_path) by user | sort - user
+
+most used browser
+index=main sourcetype=access_combined | eval browser=useragent | replace *Firefox* with Firefox, *Chrome* with Chrome, *MSIE* with "Internet Explorer", *Version*Safari* with Safari, *Opera* with Opera in browser | top limit=5 useother=t browserindex=main sourcetype=access_combined | eval os=useragent | replace *Windows* with Windows, *Macintosh* with Apple, *Linux* with Linux in os | top limit=3 useother=t osreferrals
+index=main sourcetype=access_combined | stats dc(clientip) AS Referals by referer_domain | sort – Referalsweb response codes
+index=main sourcetype=access_combined | chart count(eval(like(status,"2%"))) AS Success, count(eval(like(status,"4%") OR like(status,"5%"))) AS Error by uri_pathtotaling success/error codesindex=main sourcetype=access_combined uri_path="/addItem" OR uri_path="/checkout" | chart count(eval(like(status,"2%"))) AS Success, count(eval(like(status,"4%") OR like(status,"5%"))) AS Error by uri_path | addcoltotals label=Total labelfield=uri_path
+
+response time stats
+sourcetype=access_combined | timechart span=6h avg(response) AS avg_response | eval avg_response=round(avg_response/1000,2)
+
+by action
+sourcetype=access_combined uri_path=* | timechart span=6h avg(response) by uri_path | foreach * [eval <<FIELD>>=round(<<FIELD>>/1000,2)]
+
+
+top viewed product
+index=main sourcetype=access_combined uri_path="/viewItem" OR uri_path="/addItem" status=200  | dedup JSESSIONID uri_path item | chart count(eval(uri_path="/viewItem")) AS view, count(eval(uri_path="/addItem")) AS add by item | sort – view | head 10
+
+% cart adds from views
+index=main sourcetype=access_combined uri_path="/viewItem" OR uri_path="/addItem" status=200  | dedup JSESSIONID uri_path item | chart count(eval(uri_path="/viewItem")) AS view, count(eval(uri_path="/addItem")) AS add by item | sort – view | head 10 | eval  cart_conversion=round(add/view*100)."%"
+
+
+functional perf-db transactions
+index=main sourcetype=log4j | transaction maxspan=4h threadId | timechart span=6h max(duration) AS max, mean(duration) AS mean, min(duration) AS min
+
+
+memory usage
+index=main sourcetype=log4j perfType="MEMORY" | eval mem_used_pc=round((mem_used/mem_total)*100) | eval mem_remain_pc=(100-mem_used_pc) | timechart span=15m avg(mem_remain_pc) avg(mem_used_pc)
+
+
+db connections
+index=main sourcetype=log4j perfType="DB" | eval threshold=con_total/100*70 | where con_used>=threshold | timechart span=4h count(con_used) AS CountOverThreshold
+
+unique visitors 30 sec window
+index=main sourcetype=access_combined | stats dc(JSESSIONID)
+
+index=main sourcetype=access_combined | stats dc(JSESSIONID) AS count | rangemap field=count low=0-1 elevated=2-5 default=severe
+
+
+timechart-request/views/response
+index=main sourcetype=access_combined | eval GET_response=if(method=="GET",response,0) | eval POST_response=if(method=="POST",response,0) | timechart span=5m avg(GET_response) AS Avg_GET_Response, avg(POST_response) AS Avg_POST_Response, count(eval(method=="GET")) AS GET_Total, count(eval(method=="POST")) AS POST_Total, count AS Total_Visits
+
+by host
+index=main sourcetype=access_combined | eval GET_response=if(method=="GET",response,0) | eval POST_response=if(method=="POST",response,0) | timechart span=5m avg(GET_response) AS Avg_GET_Response, avg(POST_response) AS Avg_POST_Response, count(eval(method=="GET")) AS GET_Total, count(eval(method=="POST")) AS POST_Total, count AS Total_Visits by host
+
+
+discrete req
+index=main sourcetype=access_combined | eval kb=bytes/1024 | table method kb response
+
+
+area chart functional stats
+index=main sourcetype=log4j | eval mem_used_MB=(mem_used/1024)/1024 | eval mem_total_MB=(mem_total/1024)/1024 | timechart span=1m values(mem_total_MB) AS Total_Mem_Avail_MB, count AS Total_Calls, avg(mem_used_MB) AS Avg_Mem_Used_MB, avg(response_time) AS Avg_Response_Time
+
+
+
+avg spent by cat
+index=main sourcetype=log4j | transaction sessionId maxspan=30m | search requestType="checkout" | stats avg(total) AS Avg_Spent by category
+
+
+views/purch over time
+index=main sourcetype=access_combined | timechart span=5m count(eval(uri_path="/viewItem")) AS Item_Views, count(eval(uri_path="/checkout")) AS Purchases
+
+
+time on site
+index=main sourcetype=access_combined | transaction JSESSIONID | stats avg(duration) AS Avg_Session_Time
+
+
+visit to checkout
+index=main sourcetype=access_combined  | transaction JSESSIONID startswith="GET /home" endswith="checkout" | stats avg(duration) AS Avg_Session_Time
+
+
+starts with home ends with co within 30
+index=main sourcetype=access_combined | transaction JSESSIONID startswith="GET /home" endswith="checkout" maxpause=30s maxspan=30m maxevents=300 | stats avg(duration) AS Avg_Session_Time
+
+
+avg exec time page req
+index=main sourcetype=access_combined | join JSESSIONID usetime=true earlier=false [ search index=main sourcetype=log4j | transaction threadId maxspan=5m | eval JSESSIONID=sessionId ] | stats avg(duration) AS Avg_Request_Execution_Time
+
+
+max concurrent checkouts
+index=main sourcetype=access_combined | transaction JSESSIONID startswith="GET /home" endswith="checkout" | concurrency duration=duration | timechart max(concurrency) AS "Concurrent Checkouts"
+
+
+relationship of web req over time
+index=main sourcetype=access_combined NOT status=200 | associate uri status supcnt=50 | table Description Reference_Key Reference_Value Target_Key Top_Conditional_Value
+
+
+db tx to mem
+index=main sourcetype=log4j | transaction threadId | associate supcnt=50 dbAction men_used
+
+
+predict trafic
+index=main sourcetype=access_combined | timechart span=1h count | predict count
+
+predict items purchased
+index=main sourcetype=log4j requestType=checkout | timechart span=1h sum(numberOfItems) as count | predict count
+
+predict function times
+index=main sourcetype=log4j | transaction threadId | timechart span=1h avg(duration) as avg_duration | predict upper98=high lower98=low avg_duration
+
+
+large web requests
+index=main sourcetype=access_combined | eventstats mean(bytes) AS mean_bytes, stdev(bytes) AS stdev_bytes | eval Z_score=round(((bytes-mean_bytes)/stdev_bytes),2) | where Z_score>1.5 OR Z_score<-1.5 | table _time, clientip, uri, bytes, mean_bytes, Z_score
+
+
+assess bytes with anomalies
+index=main sourcetype=access_combined | anomalies field=bytes threshold=0.03 | table unexpectedness,bytes,  _raw | sort –unexpectedness
+
+using anomaly value (across entire event set)
+index=main sourcetype=access_combined | anomalousvalue action=filter pthresh=0.03
+
+
+looking for outliers
+index=main sourcetype=access_combined | cluster showcount=t | table cluster_count _raw | sort +cluster_count
+
+
+session spoofing?
+index=main sourcetype=access_combined | transaction JSESSIONID | eval count_of_clientips=mvcount(clientip) | where count_of_clientips > 1 | table _time, count_of_clientips, clientip, JSESSIONID | sort count_of_clientips
+
+
+urgency
+index=main sourcetype=access_combined| join JSESSIONID usetime=true earlier=false [ search index=main sourcetype=log4j | transaction threadId | eval JSESSIONID=sessionId ] | transaction JSESSIONID | eval count_of_clientips=mvcount(clientip) | where count_of_clientips > 1 | eval cost_urgency=if(itemPrice>=1000,"2","1") | eval frequency_urgency=case(count_of_clientips=="2","1", count_of_clientips=="3","2",1=1,"3") | eval urgency=cost_urgency + frequency_urgency | table _time, count_of_clientips, clientip, JSESSIONID | sort urgency
+
+
+
+
+Number1 customer
+sourcetype=access_* status=200 action=purchase | top limit=1 clientip
+
+
+Vip customer
+sourcetype=access_* status=200 action=purchase [search      sourcetype=access_* status=200 action=purchase | top limit=1      clientip | table clientip] | stats count AS "Total Purchased",
+dc(productId) AS "Total Products", values(productName) AS      "Product Names" by clientip | rename clientip AS "VIP Customer"
+
+reports
+sourcetype=access_* status=200 action=purchase [search      sourcetype=access_* status=200 action=purchase | top limit=1      clientip | table clientip] | stats count AS "Total Purchased",      dc(productId) AS "Total Products", values(productName) AS      "Product Names" by clientip | rename clientip AS "VIP Customer"
+
+
+
+sourcetype=access_* status=200 | chart count AS views      count(eval(action="addtocart")) AS addtocart      count(eval(action="purchase")) AS purchases by productName |      rename productName AS "Product Name", views AS "Views", addtocart      AS "Adds to Cart", purchases AS "Purchases"
+
+sourcetype=access_* status=200 | stats count AS views      count(eval(action="addtocart")) AS addtocart      count(eval(action="purchase")) AS purchases by productName | eval      viewsToPurchases=(purchases/views)*100 | eval 
+cartToPurchases=(purchases/addtocart)*100 | table productName      views addtocart purchases viewsToPurchases cartToPurchases |      rename productName AS "Product Name" views AS "Views", addtocartpurchase trends - sparkling
+sourcetype=access_* status=200 action=purchase| chart      sparkline(count) AS "Purchases Trend" count AS Total by      categoryId | rename categoryId AS "Category"
+

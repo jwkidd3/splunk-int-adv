@@ -1,0 +1,235 @@
+docker run -d -p 8000:8000 -e "SPLUNK_START_ARGS=--accept-license" -e "SPLUNK_PASSWORD=password" --name splunk splunk/splunk:latest
+
+Flow
+
+
+1. Purchases Trend Report
+sourcetype=access_* status=200 action=purchase| chart sparkline(count) AS "Purchases Trend" count AS Total BY categoryId | rename categoryId AS Category
+
+2. Actions conversion rates by product
+sourcetype=access_* status=200 | stats count AS views count(eval(action="addtocart")) AS addtocart count(eval(action="purchase")) AS purchases by productId | eval viewsToPurchases=(purchases/views)*100 | eval cartToPurchases=(purchases/addtocart)*100 | table productId views addtocart purchases viewsToPurchases cartToPurchases | rename productId AS "Product ID", views AS "Views", addtocart as "Adds To Cart", purchases AS "Purchases"
+
+Column Chart
+Format X Axis Label - Label Rotation
+Format Y Axis
+1. Click Format and Y-Axis.
+2. For Title, choose Custom and type Actions.
+3. For Interval type 500.
+4. For Max Value type 2500.
+
+Format the second Y-Axis
+1. To fix this issue, click Format and Chart Overlay.
+To separate the actions from the conversion rates, you can overly one set of values over another set of values. In this example you will overlay the conversion rates, as lines, over the actions, which will remain as columns.
+2. For Overlay, click inside the box. Begin and select viewsToPurchase. Click inside the box again and select cartToPurchase. This identifies the two series that you want to overlay on to the column chart.
+3. For View as Axis, click On. 
+4. For Title, choose Custom
+5. Type Conversion Rates.
+6. For Scale, click Linear.
+7. For the Interval type 20. For the Max Value type 100.
+8. Close the Format dialog box. Notice that the conversion rates now appear as lines in the chart.
+9. Click Save As and select Report.
+10. In the Save Report As dialog box, for Title type Comparison of Actions and Conversion Rates by Product. 
+11. For Description, type The number of times a product is viewed, added to cart, and purchased and the
+rates of purchases from these actions.
+12. Click Save
+13. In the confirmation dialog box, click View.
+
+
+
+Save a search as a dashboard panel
+1. Start a new search.
+2. Change the time range to Previous week.
+3. Run the following search.
+sourcetype=access_* status=200 action=purchase | top categoryId
+
+This search returns events from web server access log files for successful (status=200) purchases. The top command automatically returns the count of purchases for each product and the percent each product is of the total purchases.
+4. Click the Visualization tab. The displays shows a Line Chart.
+5. Change the Line Chart to Pie Chart.
+6. Click Save As and select Dashboard Panel. 
+7. Define a new dashboard and dashboard panel.
+  1. For Dashboard, click New.
+  2. For Dashboard Title, type  Purchases.
+     The Dashboard ID field displays purchases.
+  3. For Dashboard Description, type Reports on purchases data.
+  4. For Dashboard Permissions, keep the default setting Private.
+  5. For Panel Title, type Top Purchases by Category.
+  6. For Panel Content, keep the setting for Pie Chart.
+8. Click Save.
+9. In the confirmation dialog box, click View Dashboard.
+
+
+View and edit dashboard panels
+1. Click Dashboards in the App bar to see the Dashboards view.
+2. For the Purchases dashboard, click the arrow ( > ) symbol in the i column to expand the dashboard information.
+
+Add controls to a dashboard
+1. In the Dashboards list, click Purchases to display that dashboard.
+2. Click Edit.
+® You can use the Add Panel option is used to create a new panel, add a report as a panel, or clone from an existing dashboard.
+® You can use the Add Input option to choose from a list of controls to add to the dashboard, including text, a checkbox, and a time range picker.
+® You can use the Dark Theme option to change the background appearance of the dashboard. To enable the theme change, you must Save and Refresh the dashboard.
+
+With the Source option, you can edit the XML source for the panel directly.
+
+
+3. Click Add Input, and select Time.
+The Time range picker input control appears on the dashboard.
+4. Click the Edit Input icon for the Time range picker. The icon looks like a pencil. This opens a set of input controls. The Time input type is selected.
+
+5. For Label, type Time range.
+6. For Token, replace the default token namefield1. Type BG_Purchases_Time_Range.
+The controls that you add to a dashboard have identifiers called input tokens. This step redefines the name of the input token for the Time range picker. The default names for input tokens are field1, field2, field3, and so on. You can change the input tokens when you add controls to your dashboard. 
+
+7. For Default, change the default time range to Previous week. 
+8. Click Apply.
+9. In the dashboard panel, click the Edit Search icon. The icon looks like a magnifying glass.
+10. In the Edit Search dialog box, for Time range the default selection is Use time picker. Click to see the options. You want to select Shared Time Picker (BG_Purchases_Time_Range).
+11. Click Apply.
+12. In the Edit Dashboard window, click Save to save the changes to the dashboard.
+The panel is now connected to the Time range picker input control in the dashboard. This Time range picker is referred to as the shared time picker. The inline search that powers the panel now uses the time range that is specified in the shared time picker.
+
+Add more panels to dashboards
+
+Add saved reports to a dashboard
+1. To display a list of your dashboards, click Dashboards on the Apps bar and select the Purchases dashboard.
+2. In the Actions column, click Edit and select Edit Panels. The Edit Dashboard page opens. 
+3. Click Add Panel.
+The Add Panel sidebar menu opens on the right side of the window.
+4. To add a new panel from an existing report, click New from Report.
+The list expands to show reports that you created and saved and built-in reports.
+5. Select Purchasing trends.
+Next to the Add Panel sidebar, the Preview sidebar appears. The preview includes information about the report, the search that the report is based on, and preview of the report itself. This is the sparkline chart report that you created.
+6. Click Add to Dashboard.
+The new panel is placed at the bottom of the dashboard.
+7. From the Add Panel sidebar menu, select the report Comparison of Actions and Conversion Rates by Product and add it to the dashboard.
+8. Close the Add Panel sidebar.
+9. Rearrange the panels on the dashboard.
+Drag and drop a panel by the panel drag and drop bar, which is at the top of the panel. When you drag a panel, a four pointed arrow symbol appears on the drag and drop bar.
+10. In the Edit Dashboards window, click Save to save your changes to the dashboard. Your finished dashboard should look like the following image.
+
+Adding a search to an existing dashboard
+You can save an ad hoc search as a panel in an existing dashboard.
+
+1. Click Search in the Apps bar to start a new search.
+2. Make sure that the time range is set to All time.
+3. Run the following search to determine the VIP client and the products that the client purchased.
+sourcetype=access_* status=200 action=purchase [search sourcetype=access_* status=200 action=purchase | top limit=1 clientip | table clientip] | stats count AS "Total Purchased", dc(productId) AS "Total Products", values(productName) AS "Product Names" BY clientip | rename clientip AS "VIP Customer"
+
+4. Click Save As and choose Dashboard panel.
+5. For Dashboard, click Existing and select Buttercup Games - Purchases. 6. For Panel title, type VIP Client Purchases.
+7. Click Save.
+8. Click View Dashboard.
+9. Click Edit.
+10. In the dashboard editor, drag the VIP Client Purchases panel next to the Top Purchases by Category pie chart. 11. Click Save.
+Your dashboard should look like the following image.
+
+
+Connecting panels to a shared Time Range Picker
+1. At the top of the dashboard click Edit.
+2. In the VIP Client Purchases dashboard panel, click the Edit Search icon. The icon looks like a magnifying glass. 
+3. In the Edit Search dialog box, for Time range select Shared Time Picker (BG_Purchases_Time_Range).
+4. Click Apply.
+5. In the Edit Dashboard window, click Save to save the changes to the dashboard.
+
+
+
+Master Detail
+1. Master Pie Chart
+sourcetype=access_* status=200 action=purchase | top categoryId
+2. Edit Drilldown
+Set categoryid = $click.value$
+Set form.categoryid = $click.value$
+3. Select source
+The XML definition of the dashboard will be displayed. There are some things that can only be done in the XML
+Make sure the top part of your XML looks like this:
+<form> 
+ <label>Driller</label>
+  <init>
+    <set token="categoryid">.</set>
+  </init>
+  <fieldset submitButton="false">
+    <input type="text" token="categoryid" searchWhenChanged="true"></input>
+  </fieldset>
+......
+4. Add a new panel of the statistics table type
+5. Use this query: sourcetype=access_* status=200 action=purchase  categoryId=$categoryid$ | stats  count  by clientip
+6. Go back to the source for your Dashboard and make your 2nd panel definition look like this:
+<panel depends="$categoryid$">
+      <table>
+        <title>Detail for: $categoryid$</title>
+        <search depends="$categoryid$">
+          <query>sourcetype=access_* status=200 action=purchase  categoryId=$categoryid$ | stats  count  by clientip</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+
+
+
+
+Complete XML:
+<form>
+  <label>Driller</label>
+  <init>
+    <set token="categoryid">.</set>
+  </init>
+  <fieldset submitButton="false">
+    <input type="text" token="categoryid" searchWhenChanged="true"></input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Chart</title>
+      <chart>
+        <search>
+          <query>sourcetype=access_* status=200 action=purchase | top categoryId</query>
+          <earliest>0</earliest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.chart">pie</option>
+        <drilldown>
+          <set token="categoryid">$click.value$</set>
+          <set token="form.categoryid">$click.value$</set>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel depends="$categoryid$">
+      <table>
+        <title>Detail for: $categoryid$</title>
+        <search depends="$categoryid$">
+          <query>sourcetype=access_* status=200 action=purchase  categoryId=$categoryid$ | stats  count  by clientip</query>
+          <earliest>0</earliest>
+          <latest></latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>
+
+
+
+
+
+
+
+
+
+Time series
+sourcetype=access* | timechart per_minute(eval(method="POST")) AS Views per_minute(eval(action="purchase")) AS Purchases
+
+Stacked bar
+sourcetype=access* | timechart count(eval(action="purchase")) by categoryId usenull=f
+
+
+
+Drilldown
+index=main sourcetype=access_* | iplocation clientip  | fillnull value="Unknown" City, Country, Region| replace "" with "Unknown" in City, Country, Region | stats count by JSESSIONID, clientip, City, Country, Region | fields clientip, City, Region, Country
+
+
+sourcetype=access_* status=200 action=purchase  categoryId=STRATEGY | stats by clientip
