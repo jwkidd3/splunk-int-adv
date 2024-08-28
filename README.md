@@ -16,12 +16,12 @@ Load based on table below:
 
 | Index |   Type |                    SourceType  |      host(s)    |    Source (File)			 |
 | ----- | ------ | -------------------------------| -------------| ----------------------|
-| Web		| Online Sales |		          access_combined	|	segment in path 2|		access.zip   |
-| Security|	   Web Server		|            linux_secure	 |	  segment in path 2	|	secure.zip  |
-| Sales		 |    sales_entries |		        sales_entries |		  appserver |		sample_sales_entries_data.json  |
-| Sales		 |    retail_sales	|	          vendor_sales	|	  appserver |		vendor_sales.log  |
-| Network	|	   Web Security Appliance |	  cisco_wsa_squid |		webserver |		sample_cisco_wsa_sqid_data.json  |
-| Network	|	   firewall_data	|	        cisco_firewall |		firewall	|	sample_cisco_firewall_data.json  |
+| web		| Online Sales |		          access_combined	|	segment in path 2|		access.zip   |
+| security|	   Web Server		|            linux_secure	 |	  segment in path 2	|	secure.zip  |
+| sales		 |    sales_entries |		        sales_entries |		  appserver |		sample_sales_entries_data.json  |
+| sales		 |    retail_sales	|	          vendor_sales	|	  appserver |		vendor_sales.log  |
+| network	|	   Web Security Appliance |	  cisco_wsa_squid |		webserver |		sample_cisco_wsa_sqid_data.json  |
+| network	|	   firewall_data	|	        cisco_firewall |		firewall	|	sample_cisco_firewall_data.json  |
 
 
 3. Before exercises can be done walk students through creating auto lookups for the following:
