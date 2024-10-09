@@ -27,7 +27,7 @@ Load based on table below:
 3. Before exercises can be done walk students through creating auto lookups for the following:
    | SourceType|Lookup File|LookupId|
    |-----------|-----------|--------|
-   |access_combined*|products.csv|productId|
+   |access_combined_wcookie|products.csv|productId|
    |vendor_sales|products.csv|Code|
    |vendor_sales|vendors.csv|VendorID|
 
