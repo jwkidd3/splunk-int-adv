@@ -16,7 +16,7 @@ Load based on table below:
 
 | Index |   Type |                    SourceType  |      host(s)    |    Source (File)			 |
 | ----- | ------ | -------------------------------| -------------| ----------------------|
-| web		| Online Sales |		          access_combined	|	segment in path 2|		access.zip   |
+| web		| Online Sales |		          access_combined_wcookie	|	segment in path 2|		access.zip   |
 | security|	   Web Server		|            linux_secure	 |	  segment in path 2	|	secure.zip  |
 | sales		 |    sales_entries |		        sales_entries |		  appserver |		sample_sales_entries_data.json  |
 | sales		 |    retail_sales	|	          vendor_sales	|	  appserver |		vendor_sales.log  |
