@@ -93,14 +93,15 @@
     | where isnotnull(mvfind(actions, "purchase"))
     ```
 
-18. Compare the run time of this against L5S1 in the Job Inspector.
+18. Compare the two in the Job Inspector. Record both numbers.
 
-    | Search | Time |
-    | ------ | ---- |
-    | L5S1 (`transaction`) | |
-    | Step 17 (`stats`) | |
+    | Search | Elapsed | scanCount |
+    | ------ | ------- | --------- |
+    | L5S1 (`transaction`) | | |
+    | Step 17 (`stats`) | | |
 
-19. Which is faster, and by roughly what factor? ______________________
+19. Which is faster, and by roughly what factor? Is the gap as large as you
+    expected? ______________________
 
 20. Name one thing `transaction` gave you here that `stats` did not.
     ______________________
@@ -118,9 +119,19 @@ or use `list()` with `stats`, which preserves input order.
 and again on Friday becomes a single transaction lasting days. The constraints
 are what make a "session" mean anything.
 
-**Step 19** — `stats` is typically several times faster, and the gap widens
-with data volume. `transaction` holds groups in memory and has a configured
-cap; past it, groups are silently dropped.
+**Step 19** — `stats` wins, but only by about a third on this dataset —
+roughly 0.05 seconds against 0.07. Both scan the same ~4,650 events, because
+both have to read every event before they can group anything.
+
+That modest gap is worth dwelling on, because the usual advice is stated far
+more strongly than the measurement supports at this scale. The reason to
+prefer `stats` is not the fraction of a second it saves on 4,650 events. It is
+that `transaction` holds every open group in memory and is governed by
+configured caps on group size and count; when it hits them it drops groups
+**silently**, returning an answer that is wrong rather than an error. `stats`
+streams and has no such ceiling. So the argument is about correctness at
+volume, not speed on a training set — and a lab dataset is exactly the wrong
+place to go looking for the difference.
 
 **Step 20** — `transaction` gave you the member events themselves in order,
 and the `startswith`/`endswith` framing. `stats` gives you aggregates about
