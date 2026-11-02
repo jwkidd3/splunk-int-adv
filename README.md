@@ -117,6 +117,21 @@ Settings > Indexes > New Index, five of them:
 
 ### 5. Load the data
 
+The quickest route is the loader, which does sections 5 to 7 in one go:
+
+```bash
+tools/load_data.sh
+```
+
+It creates the indexes, installs `conf/` as a Splunk app, copies the lookup
+CSVs into it, and one-shots every file with the right index, sourcetype and
+host. It is idempotent — it empties the indexes first, so re-running does not
+double your event counts. Pass `--append` if you want to add instead.
+
+To do it by hand instead, the rest of this section and sections 6 and 7
+describe the same work through the UI.
+
+
 | Index | Sourcetype | host | File |
 | ----- | ---------- | ---- | ---- |
 | `web` | `access_combined` | segment in path 2 | `data/access.zip` |
@@ -139,6 +154,15 @@ Verify everything landed:
 ```
 | eventcount summarize=false index=* | dedup index | table index count
 ```
+
+> **The configuration in `conf/` is not optional.** A stock Splunk recognises
+> the `linux_secure` sourcetype but ships none of its field extractions —
+> those live in the Splunk Add-on for Unix and Linux, which is a Splunkbase
+> download. Without `conf/props.conf`, `src_ip`, `user` and `vendor_action`
+> resolve to nothing and seven of the twelve labs return empty results with no
+> error to explain why. If you load by hand, install `conf/props.conf` and
+> `conf/transforms.conf` into the class app's `local/` directory and put the
+> lookup CSVs in its `lookups/` directory.
 
 ### 6. Create the lookups
 
@@ -218,6 +242,9 @@ Press **S** in any deck for speaker notes, **O** for the slide overview,
 | `tools/build_presentations.py` | Renders the decks |
 | `tools/course_content.py` | Slide content — edit this, not the HTML |
 | `tools/ip_lookup_server.py` | Local service for Lab 11 |
+| `tools/load_data.sh` | Creates indexes, installs `conf/`, ingests `data/` |
+| `tools/validate_labs.py` | Runs every lab search against a live Splunk |
+| `conf/` | Sourcetype properties, lookup definitions, app manifest |
 | `tools/reveal/` | Vendored Reveal.js 4.3.1 (MIT) |
 
 Both generated directories are committed so the course works from a fresh
@@ -263,6 +290,22 @@ Labs 2 and 3 rely on those ranges, so keep them if you edit the generator.
 - Field *names* are case sensitive throughout Splunk; field *values* are not,
   except in `where` and in lookup matches. This trips up at least one student
   per class, which is why Lab 1 opens with it.
+- **Check the labs still run before class:**
+
+  ```bash
+  python3 tools/validate_labs.py
+  ```
+
+  It executes every complete search in `labs/` against the live instance and
+  exits non-zero if any returns nothing. Searches that are *supposed* to be
+  empty — the case-sensitivity contrast in Lab 1, anything depending on an
+  object the student has not created yet — are listed in the script with the
+  reason, so a failure means something is genuinely wrong.
+- **Install the course config into its own app, not `etc/system/local`.**
+  System-level configuration is shadowed by any app defining the same object.
+  On a shared training instance that is a real collision: another course's
+  `products_lookup` will silently win, and your searches will enrich with its
+  data instead of yours.
 
 ## Licence
 

@@ -8,6 +8,12 @@ Timestamps are relative to the moment you run it, which is the point: the labs
 ask for "Last 24 hours" and "Last 7 days", so regenerate before class rather
 than widening every time range.
 
+The default window is 35 days against a longest lab preset of "Last 30 days".
+That five-day margin is deliberate: a window equal to the preset starts
+clipping its oldest events the moment the clock moves past generation time,
+so a dataset built on Wednesday morning is already losing events by the
+Thursday session.
+
     python3 tools/generate_data.py                 # writes into data/
     python3 tools/generate_data.py --days 45 --seed 7
     python3 tools/generate_data.py --out /tmp/x
@@ -162,6 +168,19 @@ def accounts(n):
         last = USER_LAST[(i // len(USER_FIRST)) % len(USER_LAST)]
         out.append(f"{first[0]}{last}")
     return out
+
+
+def write_ndjson(path, records):
+    """One JSON object per line.
+
+    A pretty-printed array is a single blob as far as Splunk is concerned, and
+    breaking it into events needs hand-written LINE_BREAKER and
+    SHOULD_LINEMERGE props. Newline-delimited JSON is split on newlines like
+    any other log and `KV_MODE = json` picks the fields up directly.
+    """
+    with open(path, "w") as fh:
+        for rec in records:
+            fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
 
 
 def ts(d):
@@ -374,8 +393,7 @@ def write_sales_entries(out, rng, now, days, count):
             "channel": rng.choice(["online", "retail", "phone", "partner"]),
         })
     recs.sort(key=lambda r: r["timestamp"])
-    with open(path, "w") as fh:
-        json.dump(recs, fh, indent=2)
+    write_ndjson(path, recs)
     return path, len(recs)
 
 
@@ -408,8 +426,7 @@ def write_web_proxy(out, rng, now, days, count):
             "duration": rng.randrange(5, 9000),
         })
     recs.sort(key=lambda r: r["timestamp"])
-    with open(path, "w") as fh:
-        json.dump(recs, fh, indent=2)
+    write_ndjson(path, recs)
     return path, len(recs)
 
 
@@ -432,8 +449,7 @@ def write_firewall(out, rng, now, days, count):
             "Duration": rng.randrange(1, 600),
         })
     recs.sort(key=lambda r: r["timestamp"])
-    with open(path, "w") as fh:
-        json.dump(recs, fh, indent=2)
+    write_ndjson(path, recs)
     return path, len(recs)
 
 
@@ -470,8 +486,8 @@ def main():
     ap = argparse.ArgumentParser(description=f"Generate the {COMPANY} dataset.")
     here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     ap.add_argument("--out", default=os.path.join(here, "data"))
-    ap.add_argument("--days", type=int, default=30,
-                    help="how far back events should reach (default 30)")
+    ap.add_argument("--days", type=int, default=35,
+                    help="how far back events should reach (default 35)")
     ap.add_argument("--seed", type=int, default=1729,
                     help="change only if you want a different dataset")
     args = ap.parse_args()

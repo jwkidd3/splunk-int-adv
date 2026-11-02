@@ -52,15 +52,17 @@
 
 ## Task 3 — Accounts with repeated failures
 
-11. Over **Last 60 minutes**, find failed logins and count them by account.
+11. Over **Last 24 hours**, find failed logins and count them by account.
 
     ```
     index=security sourcetype=linux_secure "Failed password"
     | stats count by user
     ```
 
-    > If this returns nothing, widen to Last 24 hours. The data is generated
-    > across 30 days, so a given hour may be quiet.
+    > An hour is too short a window for this question: the generated failures
+    > work out at roughly three an hour across all 125 accounts, so no single
+    > account reaches four. Over 24 hours three accounts qualify; over 7 days,
+    > twenty-six.
 
 12. Keep only accounts with more than three, sorted descending.
 
