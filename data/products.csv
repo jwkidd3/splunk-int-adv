@@ -1,0 +1,15 @@
+productId,product_name,categoryId,price,Code
+HV-TN-101,Cirrus 2P Tent,TENTS,329.00,A
+HV-TN-102,Basecamp 4P Tent,TENTS,489.00,B
+HV-TN-103,Tarn Ultralight Shelter,TENTS,265.50,C
+HV-PK-201,Ridgeline 65L Pack,PACKS,219.99,D
+HV-PK-202,Daybreak 28L Pack,PACKS,94.50,E
+HV-PK-203,Portage Haul Duffel,PACKS,139.00,F
+HV-FW-301,Scree Approach Shoe,FOOTWEAR,148.00,G
+HV-FW-302,Kettle Ridge Boot,FOOTWEAR,232.00,H
+HV-FW-303,Shoal River Sandal,FOOTWEAR,72.00,I
+HV-NV-401,Meridian GPS Handheld,NAVIGATION,399.00,J
+HV-NV-402,Lodestone Compass,NAVIGATION,46.00,K
+HV-AP-501,Stormwall Shell,APPAREL,288.00,L
+HV-AP-502,Thermal Grid Midlayer,APPAREL,124.00,M
+HV-AP-503,Headland Sun Hoody,APPAREL,79.00,N
