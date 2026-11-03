@@ -111,13 +111,69 @@
 <details>
 <summary>Expand after attempting.</summary>
 
+**Step 4** — Over **Last 24 hours**:
+
+```
+index=web sourcetype=access_combined action=*
+| transaction JSESSIONID
+| table JSESSIONID, clientip, action
+```
+
 **Step 5** — `transaction` collapses multi-valued fields to their distinct
 values and sorts them. If you need the order, keep `_time` and the raw events,
 or use `list()` with `stats`, which preserves input order.
 
+**Step 9** — ```
+index=web sourcetype=access_combined action=*
+| transaction JSESSIONID
+| search action=purchase
+| table JSESSIONID, clientip, duration, eventcount, action
+```
+
+`duration` and `eventcount` are added by `transaction` itself, so they are
+available to `table` without any `eval`.
+
+**Step 11** — ```
+index=web sourcetype=access_combined action=*
+| transaction JSESSIONID
+| search action=purchase
+| eval durationMinutes = round(duration/60, 1)
+| where durationMinutes > 1
+| table JSESSIONID, clientip, action, durationMinutes, eventcount
+```
+
+The `table` has to come last. Put it before the `where` and you drop
+`duration`, leaving nothing for the comparison to filter on.
+
+**Step 14** — ```
+index=web sourcetype=access_combined
+| transaction clientip
+    startswith=(action="addtocart")
+    endswith=(action="purchase")
+    maxspan=30m maxpause=10m
+| table clientip, JSESSIONID, product_name, action, duration, eventcount
+```
+
+`product_name` arrives from the `hv_products.csv` automatic lookup you built
+in Lab 1. If the column is empty, that lookup is the thing to go and check.
+
 **Step 15** — Duration balloons, because one address that visited on Monday
 and again on Friday becomes a single transaction lasting days. The constraints
 are what make a "session" mean anything.
+
+**Step 18** — Both return the same 34 sessions, and both scan the same 487 events. Measured
+runs sat within a few hundredths of a second of each other.
+
+| Search | Elapsed | scanCount |
+| ------ | ------- | --------- |
+| L6S1 (`transaction`) | 0.045s | 487 |
+| Step 17 (`stats`) | 0.042s | 487 |
+
+So this is not a speed argument, and you should not make one. `stats` wins
+because it *streams*: it keeps one running row per `JSESSIONID` and emits as
+it goes. `transaction` holds every open session in memory at once, and when it
+runs out of room it discards the oldest ones and tells you nothing. At this
+volume both are correct. At production volume only one of them is.
 
 **Step 19** — `stats` wins, but only by about a third on this dataset —
 roughly 0.05 seconds against 0.07. Both scan the same ~4,650 events, because

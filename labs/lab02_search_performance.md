@@ -138,6 +138,22 @@ evidence from the Job Inspector rather than intuition.
 <details>
 <summary>Expand after attempting.</summary>
 
+**Step 1** — 28, 0, 28. Figures below are from the reference dataset. Yours will match closely if the data was generated the morning of class.
+
+| Search | Events |
+| ------ | ------ |
+| `productId=HV-TN-101` | 28 |
+| `productid=HV-TN-101` | 0 |
+| `productId=hv-tn-101` | 28 |
+
+Field *names* are case sensitive, so `productid` is a field that does not
+exist and nothing can match it. Field *values* are not, so `hv-tn-101` finds
+the same 28 events as `HV-TN-101`.
+
+The middle search is worth inspecting: `scanCount` 28, `resultCount` 0. All
+three read the same 28 events, because `HV-TN-101` is an indexed term in the
+raw text. The second one then discards every one of them.
+
 **Step 2** — The first and third agree. Field *names* are case sensitive, so
 `productid` matches nothing. Field *values* are not, so `hv-tn-101` works.
 
@@ -150,6 +166,16 @@ event count differs from (a). (c) yes — values are case insensitive.
 with no filter, against 413 and 413 with it. Both numbers fall together,
 because the filter values are searchable terms and the index can narrow on
 them directly.
+
+**Step 4** — Over **Last 7 days**: `scanCount` 4,718 and `resultCount` 4,718.
+
+With no filter beyond the sourcetype, every event read is an event returned.
+
+**Step 5** — `scanCount` 417 and `resultCount` 417 — about eleven times less than step 4.
+
+Both numbers fall together, and that is the tell. Splunk used the index to
+find the 417 matching events rather than reading 4,718 and discarding most of
+them.
 
 **Step 6** — Identical. Around 413 either way. This surprises most people, and
 the reason is step 7.
@@ -168,6 +194,23 @@ So the lesson is sharper than "filter early". Splunk will often fix a simple
 late filter for you, and it cannot fix anything it cannot see through. Write
 the filter into the base search and you never have to work out which case you
 are in.
+
+**Step 9** — `scanCount` is 4,718 in all three modes. The mode changes how much field
+extraction Splunk does per event, not how much data it reads, so read
+`runDuration` and ignore the scan.
+
+Fast is quickest. Smart is the one worth understanding: it has no fixed cost
+of its own, it picks a side. With no transforming command it discovers fields
+like Verbose; add a `| stats` and it behaves like Fast. Measured over
+**Last 7 days**:
+
+| Search | Verbose | Fast | Smart |
+| ------ | ------- | ---- | ----- |
+| `index=web sourcetype=access_combined` | 0.262s | 0.061s | 0.124s |
+| the same, plus `\| stats count by host` | 0.141s | 0.059s | 0.050s |
+
+Absolute timings move from run to run; the pattern does not. Smart tracks
+Verbose on the first row and Fast on the second.
 
 **Step 10** — `command.search.kv`, field extraction. Verbose extracts every
 field it can find whether you asked for it or not.

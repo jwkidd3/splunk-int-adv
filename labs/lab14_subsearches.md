@@ -150,6 +150,11 @@ runs against a truncated list.
 <details>
 <summary>Expand after attempting.</summary>
 
+**Step 1** — 60 addresses, over **Last 30 days** on the reference dataset.
+
+Comfortably under the 10,000-row subsearch ceiling, which is why Task 1 works
+and Task 4 does not.
+
 **Step 3** — The bracketed subsearch is gone, replaced by a long
 `( clientip="x" OR clientip="y" OR ... )` expression. Splunk runs the inner
 search, converts the results to search terms, and rewrites the outer search
@@ -160,6 +165,12 @@ of the generated expression, which is both enormous and wrong — you would be
 matching on `status`, `bytes` and everything else as well. Without `dedup`,
 the same address is repeated for every error it had. Both are about keeping
 the generated expression small and correct, not about tidiness.
+
+**Step 7** — 125 — every account in the data, over **Last 30 days**.
+
+That is the point of the scenario: *failed at least once* excludes nobody. The
+list only becomes useful once step 8 narrows it to accounts that failed and
+never succeeded.
 
 **Step 9** — The five privileged accounts: `administrator`, `sapadmin`,
 `sysadmin`, `admin`, `itmadmin`. No real person's account appears, because

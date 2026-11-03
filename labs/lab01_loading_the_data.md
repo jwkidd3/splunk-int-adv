@@ -249,6 +249,12 @@ the later labs return product codes instead of product names.
 <details>
 <summary>Expand after attempting.</summary>
 
+**Step 4** — Yes — five rows, every `totalEventCount` zero.
+
+A missing row means a mistyped name. A row that already has events means you
+are on an instance someone has loaded before; say so before you load this
+course's data on top of it.
+
 **Step 7** — Yes to both. `access_combined` is a built-in sourcetype, so
 Splunk already knows the combined log format and extracts `clientip`,
 `status`, `bytes` and the rest without being told.

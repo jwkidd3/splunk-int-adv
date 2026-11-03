@@ -140,8 +140,33 @@ case sensitive on field *names*, so `Count` fails in each. The difference
 appears when you change a *value*: `search user=ACHO` matches, `where
 user="ACHO"` does not.
 
+**Step 16** — Over **Last 24 hours**, four slices:
+
+```
+index=web sourcetype=access_combined
+| eval dataSize = case(bytes < 2000,  "Small",
+                       bytes < 2500,  "Medium",
+                       bytes < 3000,  "Large",
+                       true(),        "Extra Large")
+| stats count by dataSize
+```
+
 **Step 17** — `case` evaluates top to bottom and stops at the first true
 condition. Anything under 2000 already matched and left the comparison, so by
 the time the second condition runs it only sees values of 2000 and above.
+
+**Step 21** — Over **Last 7 days**, the Challenge search in full:
+
+```
+index=network sourcetype=web_proxy
+| stats count by http_content_type
+| eval type = if(like(http_content_type, "image%"), "graphic", "other")
+| stats sum(count) as total by type
+```
+
+`sum(count)`, not `count`. The first `stats` already counted the events; this
+one totals those counts. Write `| stats count as total by type` and you get
+the number of *content types* in each group — two small numbers that look
+plausible and mean nothing.
 
 </details>

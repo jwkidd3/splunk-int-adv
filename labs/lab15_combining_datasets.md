@@ -178,6 +178,23 @@ practical reason to think about join type rather than accept the default.
 and looks for events containing the word, which returns nothing. Generating
 commands always come first.
 
+**Step 16** — Over **Last 30 days**, both return the same 14 rows.
+
+| Search | Elapsed | scanCount |
+| ------ | ------- | --------- |
+| L15S1 (`join`) | 0.119s | 2,116 |
+| Step 15 (`stats`) | 0.056s | 6,356 |
+
+Read those scan figures carefully, because taken at face value they say the
+opposite of the truth. `join` reports only what its **outer** search read. The
+subsearch is a separate job, and it scanned another 4,239 events — and
+2,116 + 4,239 is the 6,356 that the `stats` version reports honestly, in one
+number.
+
+The `join` did not do less work. It did the same work and told you about less
+of it. This is worth remembering the next time a `join` looks cheap in the
+Job Inspector.
+
 **Step 17** — Both return the same answer. `stats` streams, has no 10,000-row
 ceiling and no silent truncation; `join` holds the subsearch result in memory
 and discards rows past the limit without telling you. The `join` reads more

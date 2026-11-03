@@ -141,9 +141,30 @@ fifth point, so the first four are null. The gap is correct.
 would invert the colours, or the panel will turn green exactly when things are
 getting worse.
 
+**Step 12** — Over **Last 7 days**:
+
+```
+index=sales sourcetype=vendor_sales VendorID<3000
+| chart count over VendorStateProvince
+```
+
+Twelve states. `geom` in step 13 then matches those names against the bundled
+US states geometry, so the spelling has to be the full state name.
+
 **Step 20** — Private, reserved and loopback addresses have no public
 geolocation. In a real dashboard, either filter them out before mapping or
 `fillnull` them into an explicit "Internal" bucket, so they are visibly
 excluded rather than silently missing.
+
+**Step 22** — Over **Last 24 hours**:
+
+```
+index=sales sourcetype=vendor_sales
+| stats count as "Units Sold" by VendorCountry
+```
+
+Eleven countries. Step 23 adds a twelfth row, and `labelfield=VendorCountry`
+is what puts the word *Total* in the country column instead of leaving it
+blank.
 
 </details>

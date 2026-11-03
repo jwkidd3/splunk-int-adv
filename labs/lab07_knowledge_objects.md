@@ -116,11 +116,48 @@ datasets. Tag: normalization. Workflow action: data enrichment.
 
 **Question 3** — All Apps. Only admin can promote an object to global scope.
 
+**Step 1** — | Object | Category |
+| ------ | -------- |
+| A field alias | Normalization |
+| An event type | Data classification |
+| A lookup | Data enrichment |
+| A field extraction | Data interpretation |
+| A data model | Datasets |
+| A tag | Normalization |
+| A workflow action | Data enrichment |
+
+Tags and aliases sit together under normalization, which surprises people who
+expect a tag to be classification. The test is what the object is *for*: a tag
+makes different sources agree on a word, an event type groups events by
+meaning.
+
+**Step 2** — Only you. Everything new is **Private** — Display For is set to Owner — so a
+report you save and leave alone is invisible to the rest of the class.
+
+**Step 3** — **All apps**. The power role can share an object to an app, but only admin can
+promote one to global.
+
+**Step 10** — `OPS_Report_WebServerErrors`. `L7S1` does not contain `OPS_` and never
+appears.
+
+**Step 11** — The prefixed one. `OPS_Report_WebServerErrors` says who owns it, what it is
+and what it covers, and one filter on `OPS_` collects the whole group.
+`L7S1` is findable only by somebody who already knows it exists, which is
+exactly the person who does not need to search for it.
+
 **Step 14** — Every listed role gains read. Write stays with admin and the
 owner until granted explicitly.
 
 **Step 15** — The button is greyed out for the power role. If yours is not,
 you are logged in as admin.
+
+**Step 18** — Shared to the app — **This app only**, which is what Lab 1 step 21 had you
+set. Not global.
+
+App scope is enough here because everything that depends on it lives in the
+same app, including the data model you build in Lab 13. That is also the trap:
+build that model in Search & Reporting instead and the lookup is invisible to
+it, so `product_name` and `categoryId` come back empty with no error.
 
 **Step 19** — The search runs without error and returns a single row with a
 null `product_name` and the total count, because the enrichment never

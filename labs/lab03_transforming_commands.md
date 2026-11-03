@@ -24,8 +24,22 @@ labs reuse.
 
 3. Switch to the **Visualization** tab and choose **Column Chart**.
 
-4. An OTHER column dominates the chart. Remove it with `useother=f`, and keep
-   only the ten busiest addresses with `limit=10`.
+4. Ninety source addresses is more than a chart can show. Narrow it to the
+   ten busiest.
+
+   ```
+   index=security sourcetype=linux_secure NOT "session opened"
+   | chart count over src_ip by vendor_action
+   | addtotals
+   | sort - Total
+   | head 10
+   | fields - Total
+   ```
+
+   > `limit` and `useother` would be the obvious reach here and neither does
+   > anything: both apply to the **`by`** field, and `vendor_action` has two
+   > values. There is no OTHER column to remove. Task 2 uses them on a `by`
+   > field with fourteen values, where they do exactly what you would expect.
 
 5. Click **Format**, and under General set **Stack Mode** to *Stacked*.
 
@@ -116,6 +130,32 @@ VendorID ranges carry meaning:
 
 **Step 9** — To the search that produced the clicked bar, with the series and
 X-axis values added as filters. Use the browser's Back button to return.
+
+**Step 11** — Over **Last 7 days**:
+
+```
+index=sales sourcetype=vendor_sales VendorID<4000
+| chart count over VendorCountry
+```
+
+**Step 12** — ```
+index=sales sourcetype=vendor_sales VendorID<4000
+| chart count over VendorCountry by product_name
+```
+
+Two rows — the United States and Canada — and fourteen product columns, plus
+an OTHER column.
+
+**Step 13** — ```
+index=sales sourcetype=vendor_sales VendorID<4000
+| chart count over VendorCountry by product_name limit=5 useother=f
+```
+
+`limit=5` keeps the five largest `product_name` series and `useother=f` drops
+the OTHER column that would otherwise collect the other nine.
+
+Both options act on the **`by`** field. That is why they work here and did
+nothing in Task 1, where the `by` field had only two values.
 
 **Step 15** — The best seller outsells the fifth by a wide margin, so on a
 linear axis the smaller series are flattened to near-zero. A log scale makes

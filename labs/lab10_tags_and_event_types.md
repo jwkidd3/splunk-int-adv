@@ -96,9 +96,25 @@ errors at the same time. IT Ops wants one name covering both.
 <details>
 <summary>Expand after attempting.</summary>
 
-**Step 8** — Yes, substantially. The tag resolves to an explicit list of
-values the index can look up directly; the leading wildcard forces a read of
-every event in range. Same five accounts, a fraction of the work.
+**Step 7** — Run both over the same range first. Step 1 says Last 24 hours and step 6 says
+Last 7 days, and comparing across two windows tells you nothing. Over
+**Last 7 days** on the reference dataset:
+
+| Search | scanCount | resultCount |
+| ------ | --------- | ----------- |
+| `user=*admin*` | 526 | 251 |
+| `tag=privileged` | 251 | 251 |
+
+Same five accounts, same 251 events. The wildcard makes Splunk read 526 events
+and throw half of them away. The tag resolves to five exact `user` values it
+can look up in the index, so every event it reads is one it keeps — which is
+what `scanCount` equalling `resultCount` means.
+
+**Step 8** — Yes, and the same five accounts. The tag resolves to an explicit
+list of values the index can look up directly, so it reads only events it
+will return; the leading wildcard has to read every candidate and filter
+afterwards. On this data that is half the events rather than a tiny fraction —
+the saving grows with how rare the tagged values are.
 
 **Step 9** — Add the new value to the `privileged` tag. Nothing else — no
 saved search, report or dashboard needs editing. That is the argument for
