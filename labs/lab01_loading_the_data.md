@@ -6,10 +6,20 @@ Every other lab in this course searches the data you are about to load. Get
 this one right and the rest work; get an index or a sourcetype name wrong and
 you will spend Lab 2 debugging a typo.
 
-> Your instructor has already installed the class app, which carries the
-> parsing rules each sourcetype needs **before** its first event lands —
-> timestamp formats, line breaking, and the field extractions for the
-> authentication logs. You are adding the indexes, the data and the lookups.
+> Your instructor has already installed the class app. Part of what it
+> carries has to be there **before** a sourcetype's first event lands:
+> Splunk works out the timestamp and where one event ends as it indexes, and
+> writes the result into the index. Get those wrong and no later fix repairs
+> them — you delete the data and load it again.
+>
+> The rest of the app is search-time and could have been added at any point:
+> the authentication logs' field extractions, JSON field discovery, and the
+> two data models.
+>
+> You are adding the indexes, the data and the lookups. The lookups are
+> search-time too, so a mistake in Task 4 costs you a correction. A mistake
+> in Task 2 or 3 costs you a reload, which is why Task 5 checks the
+> timestamps and not just the counts.
 
 ## Task 1 — Create the indexes
 
