@@ -23,7 +23,7 @@ standard library.
 
 ## Task 1 — A GET action
 
-1. Go to **Settings > Fields > Workflow actions** and click
+1. Go to **Settings → Fields → Workflow actions** and click
    **New Workflow Action**.
 
 2. Configure it:

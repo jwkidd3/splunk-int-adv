@@ -28,7 +28,7 @@ converted into local currency, without learning SPL.
 
 3. Copy the whole search somewhere safe — you need it twice.
 
-4. Go to **Settings > Advanced search > Search macros** and click
+4. Go to **Settings → Advanced search → Search macros** and click
    **New Search Macro**.
 
 5. Set Destination app to `splunk_intadv`, Name to `europe_sales`, and paste the
@@ -111,7 +111,7 @@ converted into local currency, without learning SPL.
 
 ## Task 5 — Validate the arguments
 
-17. Open `to_currency(3)` from **Settings > Advanced search > Search macros**.
+17. Open `to_currency(3)` from **Settings → Advanced search → Search macros**.
     You may need to set **Owner** to your user name to see it.
 
 18. In **Validation Expression** type:

@@ -10,7 +10,7 @@ activity and has no intention of learning SPL.
 
 ## Task 1 — The root event dataset
 
-1. Go to **Settings > Data models** and click **New Data Model**.
+1. Go to **Settings → Data models** and click **New Data Model**.
 
    > Two models are already listed, `Harborview_Web` and
    > `Harborview_Authentication`. Those ship with the course and are what
@@ -112,12 +112,12 @@ activity and has no intention of learning SPL.
 
 28. Split Rows by **action taken**, Split Columns by **day**.
 
-29. **Save As > Dashboard Panel**. Dashboard Title `Weekly Store Activity`,
+29. **Save As** → **Dashboard Panel**. Dashboard Title `Weekly Store Activity`,
     Panel Title `Shopping cart activity by day`. Save and view.
 
 ## Task 7 — A lookup field
 
-30. Return to **Settings > Data models** and select `Store Activity`.
+30. Return to **Settings → Data models** and select `Store Activity`.
 
 31. With `Web requests` selected, click **Add Field > Lookup**.
 
@@ -138,7 +138,7 @@ activity and has no intention of learning SPL.
 
 38. Split Columns by **day**.
 
-39. **Save As > Dashboard Panel**, add it to the existing
+39. **Save As** → **Dashboard Panel**, add it to the existing
     `Weekly Store Activity` dashboard as `Status summary`.
 
 40. View the dashboard.

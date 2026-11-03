@@ -16,7 +16,7 @@ you will spend Lab 2 debugging a typo.
 1. Log in to Splunk at <http://localhost:8000> and switch to the
    **CLASS: Intermediate** app.
 
-2. Go to **Settings > Indexes** and click **New Index**.
+2. Go to **Settings → Indexes** and click **New Index**.
 
 3. Create five, accepting every default except the name:
 
@@ -51,10 +51,11 @@ access/www3/access.log
 You want each event's `host` to be the server it came from, not the name of
 the file you uploaded.
 
-5. Go to **Settings > Add Data** and choose **Upload**.
+5. Go to **Settings → Add Data** and choose **Upload**.
 
-6. Select `data/access.zip` from the course repository. Splunk unpacks an
-   archive for you. Click **Next**.
+6. Click **Select File**, browse to `data/access.zip` in the course
+   repository, and click **Open**. Splunk unpacks an archive for you. Click
+   **Next**.
 
 7. On **Set Source Type**, choose **Web > access_combined**.
 
@@ -70,7 +71,8 @@ the file you uploaded.
 
 10. For **Index**, select `web`.
 
-11. Click **Review**, then **Submit**.
+11. Click **Review**, check the summary, then **Submit**. You should see
+    "File has been uploaded successfully".
 
 12. Verify the host extraction worked — this is the step that catches a wrong
     segment number:
@@ -88,9 +90,9 @@ the file you uploaded.
 
 ## Task 3 — Load the rest
 
-13. Repeat the upload for each remaining source. The host for the two
-    archives again comes from **Segment in path 2**; for the single files,
-    type the host in directly.
+13. Click **Add More Data** and repeat the upload for each remaining source.
+    The host for the second archive again comes from **Segment in path 2**;
+    for the single files, type the host in directly.
 
     | File | Sourcetype | Index | Host |
     | ---- | ---------- | ----- | ---- |
@@ -101,14 +103,23 @@ the file you uploaded.
     | `data/firewall.json` | `firewall` | `network` | `firewall` |
     | `data/trailmate_beta.log` | `trailmate_beta` | `apps` | `appserver` |
 
-14. For the sourcetypes that are not in Splunk's built-in list — everything
-    below `linux_secure` — the Set Source Type screen will not offer them.
-    Type the name into the **Source type** box exactly as the table shows and
-    Splunk will use it.
+14. Five of these sourcetypes are not in Splunk's built-in list, so the Set
+    Source Type screen will not offer them. You create each one the same way
+    you would in Fundamentals Lab 1: on the **Set Source Type** screen, click
+    **Save As** beside the source type, and fill in the modal.
 
-    > Spelling matters, and nothing warns you. `web_proxy` works;
-    > `webproxy` silently creates a different sourcetype with no parsing
-    > rules, and Lab 9 will return nothing with no explanation.
+    | Field | Value |
+    | ----- | ----- |
+    | Name | the sourcetype from the table above, spelled exactly |
+    | Description | a short note, e.g. `Employee web proxy traffic` |
+    | Category | `Custom` |
+    | App | `CLASS: Intermediate` |
+
+    Click **Save**, check the preview updates, then **Next**.
+
+    > Spelling matters and nothing warns you. `web_proxy` picks up the
+    > parsing rules your instructor installed; `webproxy` creates a different
+    > sourcetype with none, and Lab 9 returns nothing with no explanation.
 
 15. `secure.zip` unpacks to **four** directories, not three — there is a mail
     server as well as the three web servers. Confirm after loading:
@@ -128,7 +139,7 @@ the file you uploaded.
 Two CSVs turn identifiers into things a person recognises. Without them, half
 the later labs return product codes instead of product names.
 
-17. Go to **Settings > Lookups > Lookup table files** and click **New Lookup
+17. Go to **Settings → Lookups → Lookup table files** and click **New Lookup
     Table File**.
 
 18. Upload `data/products.csv` into the **CLASS: Intermediate** app, with

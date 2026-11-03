@@ -33,7 +33,7 @@ Answer before you start.
 5. Open **Settings**. Everything under the **KNOWLEDGE** heading is an object
    manager.
 
-   > Older material calls this "Settings > Knowledge". There is no menu item
+   > Older material calls this "Settings → Knowledge". There is no menu item
    > with that name — it is the column heading above the group of links.
 
 6. Click **All configurations**. Set **App context** to *CLASS: Intermediate*,
@@ -55,7 +55,7 @@ Answer before you start.
 
 9. Save it twice: once as **`OPS_Report_WebServerErrors`**, once as **`L7S1`**.
 
-10. In **Settings > Searches, reports, and alerts**, type `OPS_` in the filter.
+10. In **Settings → Searches, reports, and alerts**, type `OPS_` in the filter.
 
     Which name tells a colleague what the object is without opening it?
     ______________________

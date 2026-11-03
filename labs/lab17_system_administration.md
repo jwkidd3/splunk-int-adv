@@ -12,7 +12,7 @@ how you answer "why is it slow?" with evidence instead of a guess.
 
 ## Task 1 — The Monitoring Console
 
-1. Go to **Settings > Monitoring Console**. On a single instance it opens in
+1. Go to **Settings → Monitoring Console**. On a single instance it opens in
    standalone mode, which is what the class container runs.
 
 2. Open **Overview**. Note the three panels: indexing rate, search activity,

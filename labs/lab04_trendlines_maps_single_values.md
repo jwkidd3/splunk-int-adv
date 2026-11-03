@@ -75,7 +75,7 @@ Five visualizations, five saved reports: L4S1 through L4S5.
 14. On the **Visualization** tab choose **Choropleth Map** and zoom to the
     United States.
 
-15. Under **Format > Tiles**, click **Populate from preset configuration** and
+15. Under **Format → Tiles**, click **Populate from preset configuration** and
     choose **Open Street Map**.
 
 16. Save as **L4S3**.

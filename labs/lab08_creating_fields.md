@@ -117,10 +117,10 @@ headers and nothing is extracted automatically.
 
 ## Task 4 — Manage what you built
 
-24. Go to **Settings > Fields > Field extractions** and find your three
+24. Go to **Settings → Fields → Field extractions** and find your three
     extractions.
 
-25. Open **Settings > Fields > Field transformations**. What is stored here
+25. Open **Settings → Fields → Field transformations**. What is stored here
     that is not in the extraction itself? ______________________
 
 26. Set permissions on the beta extractions so the whole app can use them.

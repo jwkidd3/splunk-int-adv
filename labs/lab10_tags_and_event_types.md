@@ -24,7 +24,7 @@ the admin account, without typing a five-way OR every time.
 
 3. In **Tag(s)** type `privileged` and save.
 
-4. Add the remaining four values. Quickest route: **Settings > Tags > List by
+4. Add the remaining four values. Quickest route: **Settings → Tags > List by
    tag name**, open `privileged`, and add them there rather than one event at
    a time.
 
@@ -64,7 +64,7 @@ errors at the same time. IT Ops wants one name covering both.
     OR (index=network sourcetype=web_proxy sc_http_status>=500)
     ```
 
-11. Choose **Save As > Event Type**. Name it `web_error`, leave Priority at
+11. Choose **Save As** → **Event Type**. Name it `web_error`, leave Priority at
     **1**, and save.
 
 12. Search for it:
@@ -82,7 +82,7 @@ errors at the same time. IT Ops wants one name covering both.
 
 ## Task 4 — Combining the two
 
-16. Tag the event type itself. **Settings > Event types**, open `web_error`,
+16. Tag the event type itself. **Settings → Event types**, open `web_error`,
     and add the tag `error`.
 
 17. Search `tag=error` and confirm it finds the same events.

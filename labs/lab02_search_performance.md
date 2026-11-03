@@ -40,7 +40,7 @@ evidence from the Job Inspector rather than intuition.
 
 ## Task 3 — scanCount, resultCount, and the search optimizer
 
-4. Run this over **Last 7 days**, then open **Job > Inspect Job**.
+4. Run this over **Last 7 days**, then open **Job → Inspect Job**.
 
    ```
    index=web sourcetype=access_combined

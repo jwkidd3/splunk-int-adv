@@ -5,7 +5,7 @@
 Everything you have built so far has run as `admin`, which can do anything.
 This lab is about what happens when it cannot.
 
-> Most of this lab is UI work in **Settings > Access controls**. Splunk moves
+> Most of this lab is UI work in **Settings → Access controls**. Splunk moves
 > these screens between releases, so follow the intent rather than the exact
 > wording if your version differs.
 
@@ -23,7 +23,7 @@ This lab is about what happens when it cannot.
 
    Which one are you logged in as? ________
 
-3. Open **Settings > Access controls > Roles** and click **power**. Compare
+3. Open **Settings → Access controls → Roles** and click **power**. Compare
    what you see against the search output.
 
 4. Find `srchIndexesAllowed` for `user`. What can that role search by
@@ -45,7 +45,7 @@ This lab is about what happens when it cannot.
 **Scenario:** the merchandising team should see store traffic and nothing
 else. Not security, not the firewall, not the proxy.
 
-6. Go to **Settings > Access controls > Roles** and click **New Role**.
+6. Go to **Settings → Access controls → Roles** and click **New Role**.
 
 7. Name it `harborview_merch`.
 
@@ -67,7 +67,7 @@ else. Not security, not the firewall, not the proxy.
 
 ## Task 3 — A user to test it with
 
-12. Go to **Settings > Access controls > Users** and click **New User**.
+12. Go to **Settings → Access controls → Users** and click **New User**.
 
 13. Username `merch1`, set a password you will remember, and assign **only**
     the `harborview_merch` role. Remove `user` from the assigned list if it

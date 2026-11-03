@@ -32,7 +32,7 @@ client list by hand — it changes every day.
    | stats count by clientip
    ```
 
-3. Open **Job > Inspect Job** and read the `search` property near the top.
+3. Open **Job → Inspect Job** and read the `search` property near the top.
    Splunk shows you the search it actually ran.
 
    What has the subsearch been replaced by? ______________________

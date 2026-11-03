@@ -26,7 +26,7 @@ user something different.
    index=network user=* | stats count by sourcetype
    ```
 
-4. Go to **Settings > Fields > Field aliases** and create:
+4. Go to **Settings → Fields → Field aliases** and create:
 
    | Field | Value |
    | ----- | ----- |
@@ -58,7 +58,7 @@ user something different.
 
 8. Over **Last 7 days**, note the `sc_bytes` field on proxy events.
 
-9. Go to **Settings > Fields > Calculated fields** and create:
+9. Go to **Settings → Fields → Calculated fields** and create:
 
    | Field | Value |
    | ----- | ----- |
