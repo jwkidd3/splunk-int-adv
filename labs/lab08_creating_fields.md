@@ -61,7 +61,7 @@ headers and nothing is extracted automatically.
     A record looks like this:
 
     ```
-    2026-10-14T09:12:44,203.0.113.44,2.0.0-beta1,route_saved,user:ana.cho@example.test DeviceName:Wayfarer-21 action:completed role:Guide
+    2026-09-29T13:15:37+0000,201.79.135.199,2.0.0-beta2,route_saved,user:nils.yilmaz@example.test DeviceName:Pathfinder-55 action:completed role:Trial
     ```
 
 11. In the Fields sidebar, under Interesting Fields, click **+ Extract New Fields**.

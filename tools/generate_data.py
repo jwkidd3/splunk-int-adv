@@ -184,7 +184,21 @@ def write_ndjson(path, records):
 
 
 def ts(d):
-    return d.strftime("%d/%b/%Y:%H:%M:%S")
+    """Combined-log timestamp, with the UTC offset a real one carries."""
+    return d.strftime("%d/%b/%Y:%H:%M:%S %z")
+
+
+def iso(d):
+    """ISO-8601 with a numeric offset Splunk's %z understands.
+
+    Naive local timestamps are a trap: Splunk reads them in the *indexer's*
+    timezone, so on a host that is not UTC every event is shifted by the
+    offset. West of UTC the newest data is merely stale; east of it the newest
+    data lands in the future, where `latest=now` silently excludes it. An
+    explicit offset makes the data correct wherever it is generated and
+    wherever it is indexed.
+    """
+    return d.replace(microsecond=0).strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
 def client_ips(rng, n):
@@ -323,6 +337,8 @@ def write_secure(out, rng, now, days, count):
     for _ in range(count):
         host = rng.choice(SECURE_HOSTS)
         when = now - dt.timedelta(seconds=rng.randrange(days * 86400))
+        # syslog has nowhere to put an offset, so these are UTC and
+        # conf/props.conf sets TZ = UTC for the sourcetype to match.
         stamp = when.strftime("%b %d %H:%M:%S")
         pid = rng.randrange(1000, 32000)
         roll = rng.random()
@@ -382,7 +398,7 @@ def write_sales_entries(out, rng, now, days, count):
         prod = rng.choice(PRODUCTS)
         qty = rng.randrange(1, 5)
         recs.append({
-            "timestamp": when.replace(microsecond=0).isoformat(),
+            "timestamp": iso(when),
             "TransactionID": str(uuid.UUID(int=rng.getrandbits(128))),
             "CustomerID": f"C{rng.randrange(100000, 999999)}",
             "AcctCode": f"AC-{rng.randrange(1000, 9999)}",
@@ -412,7 +428,7 @@ def write_web_proxy(out, rng, now, days, count):
     for _ in range(count):
         when = now - dt.timedelta(seconds=rng.randrange(days * 86400))
         recs.append({
-            "timestamp": when.replace(microsecond=0).isoformat(),
+            "timestamp": iso(when),
             "cs_username": rng.choice(people),
             "s_hostname": f"proxy{rng.randrange(1,4)}.{DOMAIN}",
             "cs_method": rng.choice(["GET", "POST", "CONNECT", "HEAD"]),
@@ -437,7 +453,7 @@ def write_firewall(out, rng, now, days, count):
     for _ in range(count):
         when = now - dt.timedelta(seconds=rng.randrange(days * 86400))
         recs.append({
-            "timestamp": when.replace(microsecond=0).isoformat(),
+            "timestamp": iso(when),
             "Username": rng.choice(people),
             "Department": rng.choice(DEPARTMENTS),
             "src_ip": str(ipaddress.IPv4Address(rng.randrange(1 << 24) + (10 << 24))),
@@ -466,7 +482,7 @@ def write_beta(out, rng, now, days, count):
         when = now - dt.timedelta(seconds=rng.randrange(days * 86400))
         first, last = rng.choice(USER_FIRST), rng.choice(USER_LAST)
         rows.append((when,
-            f"{when.replace(microsecond=0).isoformat()},"
+            f"{iso(when)},"
             f"{rng.choice(ips)},"
             f"{rng.choice(BETA_VERSIONS)},"
             f"{rng.choice(BETA_EVENTS)},"
@@ -494,7 +510,7 @@ def main():
 
     os.makedirs(args.out, exist_ok=True)
     rng = random.Random(args.seed)
-    now = dt.datetime.now().replace(microsecond=0)
+    now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
 
     print(f"{COMPANY} dataset -> {args.out}")
     print(f"  seed {args.seed}, {args.days} days back from {now:%Y-%m-%d %H:%M}\n")

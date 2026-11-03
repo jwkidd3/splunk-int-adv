@@ -17,6 +17,10 @@ What it deliberately does NOT flag:
   regexes, eval expressions, props - not searches.
 * Blocks containing a backtick macro or a `$token$`. They depend on objects
   the student creates during the lab, so a zero result here means nothing.
+Each search runs over the time range the lab tells the student to use, not
+over one wide window. A search can pass at "-40d" and still return nothing at
+"Last 24 hours", and the student only ever sees the latter.
+
 * Searches the lab states are wrong on purpose. Mark those in the markdown by
   putting them in a table rather than a fenced block, as Lab 1 Task 2 does.
 * Searches that depend on a knowledge object the lab itself has the student
@@ -40,6 +44,23 @@ FENCE = re.compile(r"```\n(.*?)```", re.S)
 
 # Commands that generate their own results, so a block starting with one is a
 # complete search rather than a mid-pipeline fragment.
+# "over **Last 24 hours**" and friends, as the labs phrase them. The window
+# nearest above a code block is the one that applies to it.
+WINDOW = re.compile(
+    r"\b(?:over\s+(?:the\s+)?)?\*\*Last\s+(\d+)\s+"
+    r"(minutes?|hours?|days?)\*\*", re.I)
+UNIT = {"minute": "m", "hour": "h", "day": "d"}
+
+
+def window_for(text, upto, default):
+    """The last time range declared before this point in the lab."""
+    hits = list(WINDOW.finditer(text, 0, upto))
+    if not hits:
+        return default, False
+    n, unit = hits[-1].groups()
+    return f"-{n}{UNIT[unit.rstrip('s').lower()]}", True
+
+
 GENERATING = re.compile(
     r"\|\s*(?:rest|dbinspect|datamodel|tstats|union|metadata|inputlookup|"
     r"makeresults|eventcount|savedsearch|history|typeahead|from)\b")
@@ -138,7 +159,8 @@ def main():
                     help="Splunk app context; the course config lives in an "
                          "app, so searching from 'search' misses its lookups")
     ap.add_argument("--window", default="-40d",
-                    help="earliest_time for every search (default -40d)")
+                    help="fallback earliest_time for blocks where the lab "
+                         "states no time range (default -40d)")
     ap.add_argument("--lab", help="only labs whose filename contains this")
     args = ap.parse_args()
 
@@ -155,17 +177,22 @@ def main():
         text = open(path, encoding="utf-8").read()
         blocks = FENCE.findall(text)
         print(f"\n{name}  ({len(blocks)} blocks)")
-        units = [(i, u) for i, b in enumerate(blocks, 1)
-                 for u in split_searches(b)]
-        for i, unit in units:
+        units = []
+        for i, b in enumerate(blocks, 1):
+            at = text.index("```\n" + b)
+            for u in split_searches(b):
+                units.append((i, u, at))
+        for i, unit, at in units:
             spl, why = runnable(unit)
             if spl is None:
                 skipped += 1
                 continue
             reason = deferred_reason(name, spl)
-            rows, err = search(spl, args.container, args.auth, args.window, args.app)
+            win, declared = window_for(text, at, args.window)
+            rows, err = search(spl, args.container, args.auth, win, args.app)
             ran += 1
-            head = spl[:62] + ("..." if len(spl) > 62 else "")
+            head = spl[:52] + ("..." if len(spl) > 52 else "")
+            tag = win if declared else f"{win} (no window stated)"
             if err and reason:
                 skipped += 1
                 ran -= 1
@@ -179,10 +206,10 @@ def main():
                     ran -= 1
                     print(f"  {i:>2}. defer  {head}\n          ({reason})")
                 else:
-                    empty.append((name, i, head))
-                    print(f"  {i:>2}. EMPTY  {head}")
+                    empty.append((name, i, f"[{win}] {head}"))
+                    print(f"  {i:>2}. EMPTY  {tag:<7} {head}")
             else:
-                print(f"  {i:>2}. ok     {head}")
+                print(f"  {i:>2}. ok     {tag:<7} {head}")
 
     print(f"\n{'='*70}")
     print(f"ran {ran}, skipped {skipped} (fragments, config, deferred), "
