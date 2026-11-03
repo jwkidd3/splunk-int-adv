@@ -62,8 +62,6 @@ CONCEPTS = {
     "lab13": ["data model", "root event", "child", "Pivot", "lookup"],
     "lab14": ["subsearch", "dedup", "NOT", "10,000"],
     "lab15": ["join", "append", "union", "stats"],
-    "lab16": ["role", "capabilit", "user"],
-    "lab17": ["Monitoring Console", "_internal", "_audit", "retention"],
 }
 
 fails, warns = [], []

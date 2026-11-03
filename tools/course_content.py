@@ -49,9 +49,7 @@ MODULES = [
         "Creating Data Models",
         "Using the Common Information Model",
         "Subsearches",
-        "Combining Datasets",
-        "Users, Roles and Capabilities",
-        "System Administration and Monitoring"]) + "</ol>"],
+        "Combining Datasets"]) + "</ol>"],
    ]},
 
   {"emoji": "&#127970;", "h": COMPANY, "cols": [
@@ -1237,14 +1235,12 @@ MODULES = [
              "offers, assemble them into a data model, normalise your data "
              "onto a shared vocabulary, and explain why one search is faster "
              "than another."),
-    ("h3", "The advanced block, Modules 15 to 18"),
+    ("h3", "The advanced block, Modules 15 and 16"),
     ("table", ["Module", "Covers"], [
       ["15 &mdash; Subsearches", "Filtering by a list that is itself a search"],
-      ["16 &mdash; Combining Datasets", "<code>join</code>, <code>append</code>, <code>union</code>, and why <code>stats</code> usually wins"],
-      ["17 &mdash; Users, Roles and Capabilities", "What happens when you are not admin"],
-      ["18 &mdash; System Administration", "Reading the data Splunk keeps about itself"]]),
-    ("ul", ["Beyond this course: alerting, Dashboard Studio, summary "
-            "indexing, and clustering"])]},
+      ["16 &mdash; Combining Datasets", "<code>join</code>, <code>append</code>, <code>union</code>, and why <code>stats</code> usually wins"]]),
+    ("ul", ["Beyond this course: users and roles, system administration, "
+            "alerting, Dashboard Studio, summary indexing, and clustering"])]},
  ]},
 
 
@@ -1391,138 +1387,6 @@ MODULES = [
      "Stack two sources with <code>append</code>, then with <code>union</code>",
      "Answer the same question with <code>stats</code> and compare both"],
    "kicker": "You will see an inner join delete the rows that mattered."},
- ]},
-
-# ---------------------------------------------------------------- Module 17
-{
- "num": 17, "slug": "users_and_roles", "color": "#4c1d95",
- "title": "Users, Roles and Capabilities",
- "slides": [
-  {"emoji": "&#128272;", "h": "Users, Roles, Capabilities", "body": [
-    ("ul", ["A <strong>user</strong> is an account; it holds no permissions "
-            "of its own",
-            "A <strong>role</strong> holds the permissions, and a user is "
-            "assigned one or more",
-            "A <strong>capability</strong> is one specific thing a role may "
-            "do &mdash; schedule a search, delete by keyword, edit a lookup",
-            "Roles inherit, so build on <code>user</code> rather than from "
-            "nothing"]),
-    ("table", ["Role", "Intended for"], [
-      ["<code>admin</code>", "Full control of the instance"],
-      ["<code>power</code>", "Create and share knowledge objects, schedule searches"],
-      ["<code>user</code>", "Search and save private objects"]]),
-    ("note", "Everything you have done in this course has run as "
-             "<code>admin</code>, which is not how any production Splunk is "
-             "configured.")]},
-
-  {"emoji": "&#128451;", "h": "Restricting Data by Role", "cols": [
-    [("ul", ["<strong>Indexes the role can search</strong> is the boundary "
-             "that matters",
-             "<strong>Indexes searched by default</strong> is what runs when "
-             "no <code>index=</code> is given",
-             "A role sees the union of its own indexes and those it inherits"]),
-     ("spl", '| rest /services/authorization/roles\n'
-             '| fields title, srchIndexesAllowed, imported_roles')],
-    [("warn", "<code>index=*</code> means &ldquo;every index you are allowed "
-              "to search&rdquo;, not &ldquo;every index&rdquo;. A restricted "
-              "user running it gets a short list and no indication that "
-              "anything was withheld."),
-     ("note", "A search against a forbidden index returns zero results, not an "
-              "error. Users report that as missing data, not missing access.")],
-   ]},
-
-  {"emoji": "&#9881;&#65039;", "h": "Capabilities Worth Knowing", "body": [
-    ("table", ["Capability", "Allows", "In <code>user</code>?"], [
-      ["<code>schedule_search</code>", "Running a saved search on a schedule", "No"],
-      ["<code>delete_by_keyword</code>", "<code>| delete</code>, hiding events from everyone", "No"],
-      ["<code>edit_own_objects</code>", "Changing permissions on your own objects", "No"],
-      ["<code>rtsearch</code>", "Real-time searches, which hold a slot open", "No"]]),
-    ("ul", ["Splunk hides what a role cannot do rather than failing the "
-            "attempt, so a missing capability looks like a missing feature",
-            "Grant deliberately; inheritance makes it easy to grant by "
-            "accident"])]},
-
-  {"type": "lab", "lab": "Lab 16", "h": "Users, Roles and Capabilities",
-   "builds": [
-     "Inspect the shipped roles and count their capabilities",
-     "Build a role that can search the store index and nothing else",
-     "Create a user, sign in as them, and find the boundary",
-     "Grant a capability and watch the UI change"],
-   "kicker": "The point of the lab is what a restricted search looks like from "
-             "the user's side: empty, not forbidden."},
- ]},
-
-# ---------------------------------------------------------------- Module 18
-{
- "num": 18, "slug": "system_administration", "color": "#334155",
- "title": "System Administration and Monitoring",
- "slides": [
-  {"emoji": "&#128202;", "h": "Splunk Indexes Itself", "body": [
-    ("table", ["Index", "Holds"], [
-      ["<code>_internal</code>", "Splunk's own logs and performance metrics"],
-      ["<code>_audit</code>", "Who ran what search, and how long it took"],
-      ["<code>_introspection</code>", "Resource usage per process"]]),
-    ("ul", ["These exist on every instance, so the searches work anywhere",
-            "They are indexes like any other &mdash; same SPL, same commands",
-            "The Monitoring Console is built from exactly these searches"]),
-    ("good", "This is what turns &ldquo;Splunk feels slow&rdquo; into a "
-             "question with an answer.")]},
-
-  {"emoji": "&#128269;", "h": "The Monitoring Console", "cols": [
-    [("ul", ["<strong>Settings &gt; Monitoring Console</strong>",
-             "Standalone mode on a single instance; distributed mode once "
-             "there are peers",
-             "Overview, Indexing, Search, and Resource Usage"]),
-     ("note", "This replaced the old SOS app. If you meet documentation "
-              "referring to Splunk on Splunk, this is where that function "
-              "went.")],
-    [("h3", "What to look at first"),
-     ("ol", ["Indexing rate &mdash; is data arriving?",
-             "Search activity &mdash; how many, how long, by whom?",
-             "Resource usage &mdash; CPU and memory headroom"]),
-     ("ul", ["All three at once is the reason to start here rather than with "
-             "a search"])],
-   ]},
-
-  {"emoji": "&#128230;", "h": "Indexes, Buckets and Retention", "body": [
-    ("spl", '| rest /services/data/indexes\n'
-            '| search title IN (web, security, sales, network, apps)\n'
-            '| eval retention_days = round(frozenTimePeriodInSecs/86400)\n'
-            '| table title, currentDBSizeMB, totalEventCount, retention_days'),
-    ("ul", ["An index is a set of <strong>buckets</strong>, each covering a "
-            "time range",
-            "A time-bounded search opens only the buckets that overlap it",
-            "Ageing out data means deleting whole buckets, not rewriting files",
-            "<code>frozenTimePeriodInSecs</code> is the retention setting"]),
-    ("note", "This is also why narrowing the time range had such a strong "
-             "effect on <code>scanCount</code> back in Module 2.")]},
-
-  {"emoji": "&#9201;&#65039;", "h": "Licence and Slow Searches", "cols": [
-    [("h3", "Licence usage"),
-     ("spl", 'index=_internal source=*license_usage.log\n'
-             '  type=Usage\n'
-             '| stats sum(b) as bytes by idx\n'
-             '| eval MB = round(bytes/1048576, 2)'),
-     ("ul", ["Measured on raw bytes indexed per day",
-             "Almost always one noisy sourcetype, not everything"])],
-    [("h3", "Slow searches"),
-     ("spl", 'index=_audit action=search info=completed\n'
-             '| stats count as searches,\n'
-             '        max(total_run_time) as slowest\n'
-             '        by user\n'
-             '| sort - slowest'),
-     ("ul", ["Every search is audited, with who and how long",
-             "The quickest route from a complaint to a cause"])],
-   ]},
-
-  {"type": "lab", "lab": "Lab 17", "h": "System Administration and Monitoring",
-   "builds": [
-     "Read the Monitoring Console, then write the searches behind it",
-     "Report index size, event count and retention",
-     "Measure licence usage by index",
-     "Find the slowest searches this instance has run &mdash; which will be yours"],
-   "kicker": "The slowest search will probably not be the one you expected, "
-             "which is the point."},
  ]},
 
 ]

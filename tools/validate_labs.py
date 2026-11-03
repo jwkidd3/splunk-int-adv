@@ -88,8 +88,6 @@ DEFERRED = {
     "lab14": [("| fields clientip] | stats count",
                "deliberately unbounded - Task 4 shows it hitting the "
                "10,000-row subsearch ceiling")],
-    "lab16": [("title=harborview_merch",
-               "role created in Task 2")],
 }
 
 
