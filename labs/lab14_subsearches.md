@@ -1,4 +1,4 @@
-# Lab 13 — Subsearches
+# Lab 14 — Subsearches
 
 **Module 15 · Subsearches**
 
@@ -44,7 +44,7 @@ client list by hand — it changes every day.
 5. Why are `fields` and `dedup` in the subsearch rather than left out?
    ______________________
 
-6. Save as **L13S1**.
+6. Save as **L14S1**.
 
 ## Task 2 — Exclusion with NOT
 
@@ -74,11 +74,11 @@ no successes at all. That is not a filter you can express directly.
 9. Look at what comes back. Do you recognise the accounts?
    ______________________
 
-10. This is the same population you tagged in Lab 9, found a completely
+10. This is the same population you tagged in Lab 10, found a completely
     different way. Which method would you put in a scheduled alert, and why?
     ______________________
 
-11. Save as **L13S2**.
+11. Save as **L14S2**.
 
 ## Task 3 — return and format
 
@@ -99,7 +99,7 @@ no successes at all. That is not a filter you can express directly.
     property. `return` emits bare terms; `fields` emits `field=value` pairs.
     When would that difference matter? ______________________
 
-15. Save as **L13S3**.
+15. Save as **L14S3**.
 
 ## Task 4 — The limits, and why they bite quietly
 
@@ -131,7 +131,7 @@ runs against a truncated list.
     | stats count
     ```
 
-19. Save as **L13S4**.
+19. Save as **L14S4**.
 
 ## Task 5 — When not to reach for one
 

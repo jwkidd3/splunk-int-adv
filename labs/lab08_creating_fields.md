@@ -1,4 +1,4 @@
-# Lab 7 — Creating and Managing Fields
+# Lab 8 — Creating and Managing Fields
 
 **Module 8 · Creating and Managing Fields**
 

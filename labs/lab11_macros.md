@@ -1,4 +1,4 @@
-# Lab 10 — Creating and Using Macros
+# Lab 11 — Creating and Using Macros
 
 **Module 11 · Creating and Using Macros**
 

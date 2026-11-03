@@ -1,4 +1,4 @@
-# Lab 15 — Users, Roles and Capabilities
+# Lab 16 — Users, Roles and Capabilities
 
 **Module 17 · Users, Roles and Capabilities**
 
@@ -117,7 +117,7 @@ what it can do.
 
 23. Delete the `merch1` user.
 
-24. Keep the `harborview_merch` role — Lab 16 looks at it again.
+24. Keep the `harborview_merch` role — Lab 17 looks at it again.
 
 ## Answers
 

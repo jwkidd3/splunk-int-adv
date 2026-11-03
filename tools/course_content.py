@@ -98,10 +98,19 @@ MODULES = [
              "<code>vendors.csv</code> supplies <code>VendorCountry</code> and "
              "<code>VendorStateProvince</code>.")]},
 
+  {"type": "lab", "lab": "Lab 1", "h": "Loading the Course Data",
+   "builds": [
+     "Create the five indexes",
+     "Load seven sources, taking the host from the path",
+     "Build the automatic lookups that turn codes into names",
+     "Verify the counts and, more importantly, the timestamps"],
+   "kicker": "Every other lab searches what you load here. A mistyped "
+             "sourcetype costs you Lab 2 rather than this one."},
+
   {"emoji": "&#9881;&#65039;", "h": "Working Conventions", "cols": [
     [("h3", "Saving your work"),
      ("ul", ["Reports are named <code>L&lt;lab&gt;S&lt;step&gt;</code> &mdash; "
-             "<code>L2S1</code> is Lab 2, first saved search",
+             "<code>L2S1</code> is Lab 3, first saved search",
              "Short names are fine here because they are disposable",
              "Module 7 covers what to do in production instead"]),
      ("h3", "Time ranges"),
@@ -110,7 +119,7 @@ MODULES = [
     [("h3", "Your app"),
      ("ul", ["Work in the <strong>CLASS: Intermediate</strong> app",
              "Knowledge objects you create belong to that app unless you say otherwise",
-             "Lab 12 is the exception and uses Search &amp; Reporting"]),
+             "Lab 13 is the exception and uses Search &amp; Reporting"]),
      ("warn", "This is not a production environment. Splunk's UI shifts between "
               "releases, so a menu may sit a little differently than the steps "
               "describe. The concepts do not move.")],
@@ -218,7 +227,7 @@ MODULES = [
     ("good", "Start with the phase that dominates, change one thing, and re-run. "
              "Optimising a phase that takes 2% of the time is wasted effort.")]},
 
-  {"type": "lab", "lab": "Lab 1", "h": "Search Performance and the Job Inspector",
+  {"type": "lab", "lab": "Lab 2", "h": "Search Performance and the Job Inspector",
    "builds": [
      "Prove that field names are case sensitive and values are not",
      "Compare <code>scanCount</code> against <code>resultCount</code> for a loose and a tight search",
@@ -338,7 +347,7 @@ MODULES = [
              "axis would flatten to a line at zero. Shared scaling is honest about "
              "magnitude. Pick deliberately &mdash; they tell different stories.")]},
 
-  {"type": "lab", "lab": "Lab 2", "h": "Transforming Commands and Charts",
+  {"type": "lab", "lab": "Lab 3", "h": "Transforming Commands and Charts",
    "builds": [
      "Chart authentication outcomes by source address, stacked",
      "Build a five-product-by-country chart with <code>useother=f</code>",
@@ -427,7 +436,7 @@ MODULES = [
     ("warn", "The totals row lands at the bottom of the <em>last page</em> of "
              "results. On a long table you have to page to it.")]},
 
-  {"type": "lab", "lab": "Lab 3", "h": "Trendlines, Maps and Single Values",
+  {"type": "lab", "lab": "Lab 4", "h": "Trendlines, Maps and Single Values",
    "builds": [
      "Time-chart authentication failures with a five-day moving average",
      "Turn a daily sales count into a single value with a trend indicator",
@@ -520,7 +529,7 @@ MODULES = [
              "having to know in advance what the series are called &mdash; which "
              "you cannot know, because they come from the data.")]},
 
-  {"type": "lab", "lab": "Lab 4", "h": "Filtering Results and Manipulating Data",
+  {"type": "lab", "lab": "Lab 5", "h": "Filtering Results and Manipulating Data",
    "builds": [
      "Convert daily traffic volume from bytes to megabytes and drop the raw column",
      "Calculate a GET-to-POST ratio per web server",
@@ -602,7 +611,7 @@ MODULES = [
               "groups rather than fail.")],
    ]},
 
-  {"type": "lab", "lab": "Lab 5", "h": "Correlating Events",
+  {"type": "lab", "lab": "Lab 6", "h": "Correlating Events",
    "builds": [
      "Group store traffic into sessions by <code>JSESSIONID</code>",
      "Keep only the sessions containing a purchase",
@@ -684,7 +693,7 @@ MODULES = [
              "There is no menu item with that name &mdash; it is the column heading "
              "above the group of links.")]},
 
-  {"type": "lab", "lab": "Lab 6", "h": "Working with Knowledge Objects",
+  {"type": "lab", "lab": "Lab 7", "h": "Working with Knowledge Objects",
    "builds": [
      "Inventory the objects that already exist, by app and by owner",
      "Save the same report under a throwaway name and a conventional one",
@@ -754,7 +763,7 @@ MODULES = [
     ("note", "This record needs both methods: delimiters for the first four "
              "comma-separated values, then a regex for the "
              "<code>key:value</code> pairs in the last one. That is exactly what "
-             "Lab 7 walks through.")]},
+             "Lab 8 walks through.")]},
 
   {"emoji": "&#128736;&#65039;", "h": "Managing Extractions", "body": [
     ("ul", ["<strong>Settings &gt; Fields &gt; Field extractions</strong> lists them all",
@@ -766,7 +775,7 @@ MODULES = [
              "save them, particularly in a clustered environment. If a brand-new "
              "field returns nothing, wait and re-run before you start debugging.")]},
 
-  {"type": "lab", "lab": "Lab 7", "h": "Creating and Managing Fields",
+  {"type": "lab", "lab": "Lab 8", "h": "Creating and Managing Fields",
    "builds": [
      "Extract source address and port from authentication logs with a regex",
      "Remove a bogus value during the validate step",
@@ -842,7 +851,7 @@ MODULES = [
              '| sort - MB')],
    ]},
 
-  {"type": "lab", "lab": "Lab 8", "h": "Field Aliases and Calculated Fields",
+  {"type": "lab", "lab": "Lab 9", "h": "Field Aliases and Calculated Fields",
    "builds": [
      "Alias <code>cs_username</code> and <code>Username</code> to <code>user</code>",
      "Prove a single search now spans both network sourcetypes",
@@ -910,7 +919,7 @@ MODULES = [
              "<code>eventtype</code> is multi-valued, so "
              "<code>| stats count by eventtype</code> counts each of them.")]},
 
-  {"type": "lab", "lab": "Lab 9", "h": "Creating Tags and Event Types",
+  {"type": "lab", "lab": "Lab 10", "h": "Creating Tags and Event Types",
    "builds": [
      "Find every variation of the admin account in the security index",
      "Tag all five as <code>privileged</code>",
@@ -978,7 +987,7 @@ MODULES = [
              "incomprehensible parse error from somewhere deep inside the expanded "
              "search. With it, the user is told exactly what they did wrong.")]},
 
-  {"type": "lab", "lab": "Lab 10", "h": "Creating and Using Macros",
+  {"type": "lab", "lab": "Lab 11", "h": "Creating and Using Macros",
    "builds": [
      "Build a basic macro for European retail sales",
      "Call it with backticks and confirm the output",
@@ -1054,7 +1063,7 @@ MODULES = [
     ("note", "Scoping is a usability decision. An action offered on every event "
              "in every search is an action people learn to ignore.")]},
 
-  {"type": "lab", "lab": "Lab 11", "h": "Creating and Using Workflow Actions",
+  {"type": "lab", "lab": "Lab 12", "h": "Creating and Using Workflow Actions",
    "builds": [
      "Build a GET action that looks up a source address",
      "Build a POST action that submits the address and user to a reporting endpoint",
@@ -1133,7 +1142,7 @@ MODULES = [
               "built to answer a single question.")],
    ]},
 
-  {"type": "lab", "lab": "Lab 12", "h": "Creating Data Models",
+  {"type": "lab", "lab": "Lab 13", "h": "Creating Data Models",
    "builds": [
      "Create a model with a root event dataset for store traffic",
      "Add auto-extracted fields, renamed for people who do not know the data",
@@ -1302,7 +1311,7 @@ MODULES = [
              "even is. Once you know, encode it as a lookup or a tag so you "
              "are not re-deriving it on every run.")]},
 
-  {"type": "lab", "lab": "Lab 13", "h": "Subsearches",
+  {"type": "lab", "lab": "Lab 14", "h": "Subsearches",
    "builds": [
      "Filter purchases by a client list you cannot write by hand",
      "Find accounts that have only ever failed, with <code>NOT</code>",
@@ -1375,7 +1384,7 @@ MODULES = [
               "<code>stats</code> would be safer.")],
    ]},
 
-  {"type": "lab", "lab": "Lab 14", "h": "Combining Datasets",
+  {"type": "lab", "lab": "Lab 15", "h": "Combining Datasets",
    "builds": [
      "Join store checkouts to order revenue on <code>productId</code>",
      "Use <code>type=left</code>, and rename a field to make a join possible",
@@ -1433,7 +1442,7 @@ MODULES = [
             "Grant deliberately; inheritance makes it easy to grant by "
             "accident"])]},
 
-  {"type": "lab", "lab": "Lab 15", "h": "Users, Roles and Capabilities",
+  {"type": "lab", "lab": "Lab 16", "h": "Users, Roles and Capabilities",
    "builds": [
      "Inspect the shipped roles and count their capabilities",
      "Build a role that can search the store index and nothing else",
@@ -1506,7 +1515,7 @@ MODULES = [
              "The quickest route from a complaint to a cause"])],
    ]},
 
-  {"type": "lab", "lab": "Lab 16", "h": "System Administration and Monitoring",
+  {"type": "lab", "lab": "Lab 17", "h": "System Administration and Monitoring",
    "builds": [
      "Read the Monitoring Console, then write the searches behind it",
      "Report index size, event count and retention",

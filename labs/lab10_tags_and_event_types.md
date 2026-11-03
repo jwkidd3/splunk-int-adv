@@ -1,4 +1,4 @@
-# Lab 9 — Creating Tags and Event Types
+# Lab 10 — Creating Tags and Event Types
 
 **Module 10 · Creating Tags and Event Types**
 
@@ -16,7 +16,7 @@ the admin account, without typing a five-way OR every time.
    You should see five accounts: `admin`, `administrator`, `sysadmin`,
    `itmadmin`, `sapadmin`.
 
-   > Note the leading wildcard. It works, and it is expensive — Lab 1 showed
+   > Note the leading wildcard. It works, and it is expensive — Lab 2 showed
    > why. Fixing that is the entire point of this task.
 
 2. Expand an event, find the `user` row, click the Actions arrow and choose

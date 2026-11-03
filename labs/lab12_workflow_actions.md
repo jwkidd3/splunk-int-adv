@@ -1,4 +1,4 @@
-# Lab 11 — Creating and Using Workflow Actions
+# Lab 12 — Creating and Using Workflow Actions
 
 **Module 12 · Creating and Using Workflow Actions**
 

@@ -1,4 +1,4 @@
-# Lab 5 — Correlating Events
+# Lab 6 — Correlating Events
 
 **Module 6 · Correlating Events**
 
@@ -37,11 +37,11 @@
    > The `search` must come *after* `transaction`. Put it before and you
    > remove the view and cart events that make up the rest of the session.
 
-7. Save as **L5S1**.
+7. Save as **L6S1**.
 
 ## Task 2 — Session length and event count
 
-8. Re-run L5S1 in **Verbose** mode and open the **Events** tab. Note the two
+8. Re-run L6S1 in **Verbose** mode and open the **Events** tab. Note the two
    fields `transaction` added: `duration` and `eventcount`.
 
 9. Back in **Smart** mode, add them to your table after `clientip`.
@@ -55,7 +55,7 @@
 11. Keep only sessions longer than a minute, and display `JSESSIONID`,
     `clientip`, `action`, `durationMinutes` and `eventcount` in that order.
 
-12. Save as **L5S2**.
+12. Save as **L6S2**.
 
 ## Task 3 — Cart to checkout
 
@@ -77,7 +77,7 @@
 15. Remove `maxspan` and `maxpause` and re-run. What happens to the longest
     `duration`, and why is that answer wrong? ______________________
 
-16. Save the constrained version as **L5S3**.
+16. Save the constrained version as **L6S3**.
 
 ## Task 4 — The same answer with stats
 
@@ -97,7 +97,7 @@
 
     | Search | Elapsed | scanCount |
     | ------ | ------- | --------- |
-    | L5S1 (`transaction`) | | |
+    | L6S1 (`transaction`) | | |
     | Step 17 (`stats`) | | |
 
 19. Which is faster, and by roughly what factor? Is the gap as large as you

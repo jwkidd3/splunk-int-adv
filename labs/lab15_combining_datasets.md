@@ -1,4 +1,4 @@
-# Lab 14 — Combining Datasets
+# Lab 15 — Combining Datasets
 
 **Module 16 · Combining Datasets**
 
@@ -35,7 +35,7 @@ system records what it was worth. Nobody has both.
 3. How many rows come back, and how many products does the catalogue have?
    ______________________
 
-4. Save as **L14S1**.
+4. Save as **L15S1**.
 
 ## Task 2 — Join types, and joining fields with different names
 
@@ -63,10 +63,10 @@ account belongs to. The firewall data knows departments. It calls the account
    count. Which accounts disappeared, and is that what you want here?
    ______________________
 
-8. Save as **L14S2**.
+8. Save as **L15S2**.
 
 > **The limit that matters.** `join` has the same 10,000-row subsearch ceiling
-> as Lab 13, and the same silent truncation. On anything large this is the
+> as Lab 14, and the same silent truncation. On anything large this is the
 > reason to use `stats` instead, which Task 5 covers.
 
 ## Task 3 — append
@@ -94,7 +94,7 @@ account belongs to. The firewall data knows departments. It calls the account
          | stats count as errors by host]
     ```
 
-11. Save as **L14S3**.
+11. Save as **L15S3**.
 
 ## Task 4 — union
 
@@ -111,7 +111,7 @@ account belongs to. The firewall data knows departments. It calls the account
 13. Note the leading pipe. `union` is a generating command, so it must come
     first. What happens if you drop it? ______________________
 
-14. Save as **L14S4**.
+14. Save as **L15S4**.
 
 ## Task 5 — The one you should usually use
 
@@ -135,13 +135,13 @@ account belongs to. The firewall data knows departments. It calls the account
 
     | Search | Elapsed | scanCount |
     | ------ | ------- | --------- |
-    | L14S1 (`join`) | | |
+    | L15S1 (`join`) | | |
     | Step 15 (`stats`) | | |
 
 17. Which reads more clearly to you? Which would you trust on a year of data?
     ______________________
 
-18. Save as **L14S5**.
+18. Save as **L15S5**.
 
 ## Task 6 — Choosing
 

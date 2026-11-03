@@ -1,8 +1,8 @@
-# Lab 3 — Trendlines, Maps and Single Values
+# Lab 4 — Trendlines, Maps and Single Values
 
 **Module 4 · Advanced Visualizations**
 
-Five visualizations, five saved reports: L3S1 through L3S5.
+Five visualizations, five saved reports: L4S1 through L4S5.
 
 ## Task 1 — Failed logins with a trendline
 
@@ -29,7 +29,7 @@ Five visualizations, five saved reports: L3S1 through L3S5.
 5. The trend line does not start at the same point as the failures line. Why?
    ______________________
 
-6. Save as **L3S1**.
+6. Save as **L4S1**.
 
 ## Task 2 — Single value with a trend indicator
 
@@ -54,7 +54,7 @@ Five visualizations, five saved reports: L3S1 through L3S5.
    | Colour by | Trend |
    | Colour mode | Background |
 
-9. Save as **L3S2**.
+9. Save as **L4S2**.
 
 10. Suppose this panel tracked failed logins instead of sales. What would you
     have to change about the colour settings, and why? ______________________
@@ -78,7 +78,7 @@ Five visualizations, five saved reports: L3S1 through L3S5.
 15. Under **Format > Tiles**, click **Populate from preset configuration** and
     choose **Open Street Map**.
 
-16. Save as **L3S3**.
+16. Save as **L4S3**.
 
 ## Task 4 — Cluster map of online purchases
 
@@ -112,7 +112,7 @@ Five visualizations, five saved reports: L3S1 through L3S5.
     `iplocation` fail on, and what would you do about it in a real dashboard?
     ______________________
 
-21. Save as **L3S4**.
+21. Save as **L4S4**.
 
 ## Task 5 — Units sold by country with a grand total
 
@@ -127,7 +127,7 @@ Five visualizations, five saved reports: L3S1 through L3S5.
 
 24. Scroll to the bottom of the last page of results to see it.
 
-25. Save as **L3S5**.
+25. Save as **L4S5**.
 
 ## Answers
 

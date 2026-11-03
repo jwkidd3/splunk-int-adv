@@ -48,26 +48,26 @@ GENERATING = re.compile(
 # or permanently because the lab is teaching why they fail. Keyed by lab
 # filename stem; the value is a marker identifying the block and the reason.
 DEFERRED = {
-    "lab01": [("productid=HV-TN-101",
+    "lab02": [("productid=HV-TN-101",
                "intentionally empty - Task 1 contrasts productId against "
                "productid to show field names are case sensitive")],
-    "lab07": [("top limit=10 port by src",
+    "lab08": [("top limit=10 port by src",
                "src and port are extracted in Task 1"),
               ("stats count by role, action",
                "role and action are extracted in Task 3")],
-    "lab08": [("index=network user=*",
+    "lab09": [("index=network user=*",
                "deliberately empty - step 3 asks the student to confirm the "
                "problem the aliases then solve"),
               ("sc_megabytes",
                "calculated field created in Task 2"),
               ("http_method",
                "aliases created in the supplemental task")],
-    "lab09": [("tag=privileged",
+    "lab10": [("tag=privileged",
                "tag created in Task 1")],
-    "lab13": [("| fields clientip] | stats count",
+    "lab14": [("| fields clientip] | stats count",
                "deliberately unbounded - Task 4 shows it hitting the "
                "10,000-row subsearch ceiling")],
-    "lab15": [("title=harborview_merch",
+    "lab16": [("title=harborview_merch",
                "role created in Task 2")],
 }
 

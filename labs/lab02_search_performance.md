@@ -1,4 +1,4 @@
-# Lab 1 — Search Performance and the Job Inspector
+# Lab 2 — Search Performance and the Job Inspector
 
 **Module 2 · Beyond Search Fundamentals**
 

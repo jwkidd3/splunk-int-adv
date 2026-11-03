@@ -1,4 +1,4 @@
-# Lab 2 — Transforming Commands and Charts
+# Lab 3 — Transforming Commands and Charts
 
 **Module 3 · Commands for Visualizations**
 
@@ -29,7 +29,7 @@ labs reuse.
 
 5. Click **Format**, and under General set **Stack Mode** to *Stacked*.
 
-6. Save as a report named **L2S1**.
+6. Save as a report named **L3S1**.
 
 7. From the confirmation screen click **Add to Dashboard**, and create a new
    dashboard:
@@ -78,7 +78,7 @@ VendorID ranges carry meaning:
 
 15. Why does a log scale help here? ______________________
 
-16. Save as **L2S2**.
+16. Save as **L3S2**.
 
 ## Task 3 — Employee web usage over time
 
@@ -91,7 +91,7 @@ VendorID ranges carry meaning:
     | timechart count by usage
     ```
 
-19. Change the visualization to **Line Chart** and save as **L2S3**.
+19. Change the visualization to **Line Chart** and save as **L3S3**.
 
 20. Add it to the `IT Ops` dashboard in a panel named
     `Internet Usage - Last 24 Hours`. Close the confirmation without viewing.
@@ -99,7 +99,7 @@ VendorID ranges carry meaning:
 21. Open the **Trellis** tab, tick **Use Trellis Layout**, and set Scale to
     **Independent**.
 
-22. Save as **L2S4** and add it to `IT Ops` as `Internet Usage by Category`.
+22. Save as **L3S4** and add it to `IT Ops` as `Internet Usage by Category`.
 
 23. Compare the two panels. What does Independent scaling reveal that the
     single line chart hid? ______________________

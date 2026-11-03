@@ -1,4 +1,4 @@
-# Lab 8 — Field Aliases and Calculated Fields
+# Lab 9 — Field Aliases and Calculated Fields
 
 **Module 9 · Creating Field Aliases and Calculated Fields**
 

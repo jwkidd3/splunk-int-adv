@@ -1,4 +1,4 @@
-# Lab 4 — Filtering Results and Manipulating Data
+# Lab 5 — Filtering Results and Manipulating Data
 
 **Module 5 · Filtering and Formatting Data**
 
@@ -28,7 +28,7 @@
 
 5. Why divide by 1048576 rather than 1000000? ______________________
 
-6. Save as **L4S1**.
+6. Save as **L5S1**.
 
 ## Task 2 — GET to POST ratio per server
 
@@ -48,7 +48,7 @@
 9. One host could in principle produce a null ratio. Under what circumstance,
    and how would you guard against it? ______________________
 
-10. Save as **L4S2**.
+10. Save as **L5S2**.
 
 ## Task 3 — Accounts with repeated failures
 
@@ -75,7 +75,7 @@
     the field name's case in both. Which one still works, and why?
     ______________________
 
-14. Save as **L4S3**.
+14. Save as **L5S3**.
 
 ## Task 4 — Classify event sizes
 
@@ -96,7 +96,7 @@
 17. The conditions look like they overlap but do not. Why does `bytes < 2500`
     not also catch everything under 2000? ______________________
 
-18. Save as **L4S4**.
+18. Save as **L5S4**.
 
 ## Challenge — Employee traffic by content type
 
@@ -119,7 +119,7 @@
 
 21. Sum the counts by `type`, renaming the result `total`, and show a pie chart.
 
-22. Save as **L4C1**.
+22. Save as **L5C1**.
 
 ## Answers
 

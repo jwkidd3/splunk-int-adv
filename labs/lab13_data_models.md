@@ -1,4 +1,4 @@
-# Lab 12 — Creating Data Models
+# Lab 13 — Creating Data Models
 
 **Module 13 · Creating Data Models**
 

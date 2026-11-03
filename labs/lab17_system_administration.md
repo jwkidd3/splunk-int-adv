@@ -1,4 +1,4 @@
-# Lab 16 — System Administration and Monitoring
+# Lab 17 — System Administration and Monitoring
 
 **Module 18 · System Administration and Monitoring**
 
@@ -119,7 +119,7 @@ how you answer "why is it slow?" with evidence instead of a guess.
     | head 5
     ```
 
-16. Does the slowest search match what you would have predicted from Lab 1?
+16. Does the slowest search match what you would have predicted from Lab 2?
     ______________________
 
 ## Task 5 — Troubleshooting with _internal
@@ -153,7 +153,7 @@ how you answer "why is it slow?" with evidence instead of a guess.
     the Monitoring Console, `_audit`, and `_internal`. Which would you reach
     for first, and why? ______________________
 
-21. Save your favourite of these as **L16S1**.
+21. Save your favourite of these as **L17S1**.
 
 ## Answers
 
@@ -167,7 +167,7 @@ on a production index it is the setting that decides how much disk you need.
 **Step 9** — Buckets let Splunk answer a time-bounded search by opening only
 the buckets whose time range overlaps it, and they let old data age out by
 deleting whole directories rather than rewriting a file. It is also why
-`scanCount` in Lab 1 responded so strongly to narrowing the time range.
+`scanCount` in Lab 2 responded so strongly to narrowing the time range.
 
 **Step 12** — Whichever has the most MB, which on the class data is `network`
 or `sales`. Before deleting anything: check who searches it and how often
@@ -176,7 +176,7 @@ and check whether the volume is one noisy sourcetype rather than the index as
 a whole. Licence pressure is almost always one source, not everything.
 
 **Step 16** — Probably not. The searches you *expected* to be slow — the
-leading wildcard in Lab 1, `transaction` in Lab 5 — are fractions of a second
+leading wildcard in Lab 2, `transaction` in Lab 6 — are fractions of a second
 on this data. The slowest will more likely be something touching `_internal`,
 which is far larger than the course indexes. That is the lesson: measure on
 the data you have, not the data you imagine.

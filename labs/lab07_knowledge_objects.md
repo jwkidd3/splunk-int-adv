@@ -1,4 +1,4 @@
-# Lab 6 — Working with Knowledge Objects
+# Lab 7 — Working with Knowledge Objects
 
 **Module 7 · Introduction to Knowledge Objects**
 
@@ -53,7 +53,7 @@ Answer before you start.
    | stats count by status, host
    ```
 
-9. Save it twice: once as **`OPS_Report_WebServerErrors`**, once as **`L6S1`**.
+9. Save it twice: once as **`OPS_Report_WebServerErrors`**, once as **`L7S1`**.
 
 10. In **Settings > Searches, reports, and alerts**, type `OPS_` in the filter.
 
@@ -101,7 +101,7 @@ Answer before you start.
 
 ## Task 5 — Clean up
 
-20. Delete `L6S1`. Keep `OPS_Report_WebServerErrors`.
+20. Delete `L7S1`. Keep `OPS_Report_WebServerErrors`.
 
 ## Answers
 

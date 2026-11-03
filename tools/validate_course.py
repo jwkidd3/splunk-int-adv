@@ -48,22 +48,22 @@ NOT_A_PROMISE = re.compile(
 
 # The commands each lab is really about, checked against its module's deck.
 CONCEPTS = {
-    "lab01": ["Job Inspector", "scanCount", "search mode"],
-    "lab02": ["chart", "timechart", "top", "useother"],
-    "lab03": ["trendline", "iplocation", "geostats", "geom", "addtotals"],
-    "lab04": ["eval", "case", "where", "fields", "like"],
-    "lab05": ["transaction", "startswith", "endswith", "duration"],
-    "lab06": ["knowledge object", "naming", "permission"],
-    "lab07": ["Field Extractor", "Regular Expression", "Delimiter"],
-    "lab08": ["alias", "calculated field"],
-    "lab09": ["tag", "event type"],
-    "lab10": ["macro", "backtick", "argument", "Validation"],
-    "lab11": ["workflow action", "GET", "POST", "search"],
-    "lab12": ["data model", "root event", "child", "Pivot", "lookup"],
-    "lab13": ["subsearch", "dedup", "NOT", "10,000"],
-    "lab14": ["join", "append", "union", "stats"],
-    "lab15": ["role", "capabilit", "user"],
-    "lab16": ["Monitoring Console", "_internal", "_audit", "retention"],
+    "lab02": ["Job Inspector", "scanCount", "search mode"],
+    "lab03": ["chart", "timechart", "top", "useother"],
+    "lab04": ["trendline", "iplocation", "geostats", "geom", "addtotals"],
+    "lab05": ["eval", "case", "where", "fields", "like"],
+    "lab06": ["transaction", "startswith", "endswith", "duration"],
+    "lab07": ["knowledge object", "naming", "permission"],
+    "lab08": ["Field Extractor", "Regular Expression", "Delimiter"],
+    "lab09": ["alias", "calculated field"],
+    "lab10": ["tag", "event type"],
+    "lab11": ["macro", "backtick", "argument", "Validation"],
+    "lab12": ["workflow action", "GET", "POST", "search"],
+    "lab13": ["data model", "root event", "child", "Pivot", "lookup"],
+    "lab14": ["subsearch", "dedup", "NOT", "10,000"],
+    "lab15": ["join", "append", "union", "stats"],
+    "lab16": ["role", "capabilit", "user"],
+    "lab17": ["Monitoring Console", "_internal", "_audit", "retention"],
 }
 
 fails, warns = [], []
