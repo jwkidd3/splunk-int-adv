@@ -1143,8 +1143,10 @@ MODULES = [
  "slides": [
   {"emoji": "&#128207;", "h": "What the CIM Is", "body": [
     ("ul", ["A shared vocabulary of field names and event tags",
-            "Shipped as an add-on containing a set of data models",
-            "Not a product that transforms data &mdash; a convention you map onto it",
+            "A <em>convention</em>, not a product that transforms your data",
+            "Splunk publishes it as a Splunkbase add-on of ready-made data "
+            "models; the convention is the part that matters, and you can "
+            "follow it without installing anything",
             "The least common denominator for a domain, not an exhaustive schema"]),
     ("good", "Module 9 solved this problem for four of your own sourcetypes. The "
              "CIM solves it for the whole industry, so an app written by someone "
@@ -1171,36 +1173,42 @@ MODULES = [
    ]},
 
   {"emoji": "&#129513;", "h": "Making Your Data CIM-Compliant", "body": [
-    ("ol", ["Install the CIM add-on from Splunkbase",
-            "Pick the data model that matches your source &mdash; Web, "
+    ("ol", ["Pick the model that matches your source &mdash; Web, "
             "Authentication, Network Traffic",
             "Alias your field names to the model's names (Module 9)",
             "Tag your events with the model's required tags (Module 10)",
             "Confirm with the model's own validation search"]),
-    ("spl", '# our store logs, mapped onto the Web model\n'
-            '#   clientip  -> src        method -> http_method\n'
-            '#   tag       -> web\n'
-            'index=web sourcetype=access_combined\n'
-            '| stats count by src, http_method, status'),
-    ("note", "Compliance is just aliases plus tags. There is no separate "
-             "mechanism to learn &mdash; which is why the CIM comes last.")]},
+    ("spl", '# our store logs, mapped onto CIM Web field names\n'
+            '#   clientip -> src     method -> http_method     uri_path -> url\n'
+            '| datamodel Harborview_Web Web search\n'
+            '| stats count by Web.src, Web.http_method, Web.status'),
+    ("good", "This course ships two models already mapped this way, "
+             "<code>Harborview_Web</code> and "
+             "<code>Harborview_Authentication</code>, so every example here "
+             "runs on the class instance with nothing to download."),
+    ("note", "Compliance is just aliases, eval fields and tags. There is no "
+             "separate mechanism to learn &mdash; which is why the CIM comes last.")]},
 
   {"emoji": "&#128269;", "h": "The datamodel Command", "body": [
-    ("spl", '# describe every model\n| datamodel\n\n'
-            '# describe one\n| datamodel Web\n\n'
-            '# search a dataset\n| datamodel Web Web search | fields Web.*'),
+    ("spl", '# describe every model available to you\n| datamodel\n\n'
+            '# describe one\n| datamodel Harborview_Web\n\n'
+            '# search a dataset\n'
+            '| datamodel Harborview_Web Web search | fields Web.*'),
     ("ul", ["A <strong>generating</strong> command &mdash; it must come first",
             "Field names are prefixed with the dataset name",
             "<code>search</code> as the third argument returns the events"]),
-    ("warn", "Without the CIM add-on installed, <code>| datamodel Web</code> "
-             "returns nothing. The add-on is what defines the model.")]},
+    ("note", "<code>| datamodel</code> lists only models this Splunk instance "
+             "actually has. On a production system with the CIM add-on you "
+             "would see its twenty-odd models here too; the command is the "
+             "same either way.")]},
 
   {"emoji": "&#9889;", "h": "tstats", "body": [
-    ("spl", '| tstats count from datamodel=Web where Web.status>=500\n'
-            '  by Web.src, Web.status'),
-    ("ul", ["Queries the accelerated summary instead of raw events",
+    ("spl", '| tstats count from datamodel=Harborview_Web\n'
+            '  where Web.status>=400 by Web.src, Web.status'),
+    ("ul", ["Reads the model's summary rather than raw events",
             "Orders of magnitude faster on large data",
-            "Only works against <strong>accelerated</strong> models",
+            "Works on an unaccelerated model too &mdash; it simply falls back to "
+            "the events, which is what happens on the class instance",
             "<code>prestats=t</code> chains it into <code>chart</code> or "
             "<code>timechart</code>"]),
     ("good", "An accelerated model plus <code>tstats</code> is how dashboards over "

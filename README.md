@@ -8,8 +8,12 @@ Everything here is original to this course and licensed under Apache 2.0.
 There is no vendor courseware, no vendor sample data and no third-party
 conference material.
 
-**The whole course runs offline.** Two things need staging before you travel;
-nothing else touches the network.
+**The whole course runs offline, and no lab or demonstration requires a
+third-party app.** Nothing is downloaded from Splunkbase. The one thing to
+stage before you travel is the Splunk container image itself.
+
+The course data, the lookups, the field extractions and the data models are
+all committed here, along with the local service Lab 11 needs.
 
 ---
 
@@ -42,23 +46,25 @@ teaching content for that lab always comes first.
 ### 1. Save the Splunk image
 
 ```bash
-docker pull splunk/splunk:9.2.1
+docker pull splunk/splunk:10.4.3
 ```
 
 ```bash
-docker save splunk/splunk:9.2.1 -o splunk-image.tar
+docker save splunk/splunk:10.4.3 -o splunk-image.tar
 ```
 
 Copy `splunk-image.tar` to the classroom machines alongside this repository.
 Pin a version — `latest` moves, and a course does not.
 
-### 2. Download the CIM add-on — only for Module 14
+### That is the only thing
 
-Module 14 demonstrates `| datamodel` and `| tstats` against the **Splunk
-Common Information Model Add-on**, which is distributed through Splunkbase and
-needs an account, so it cannot be redistributed here. Get it from
-<https://splunkbase.splunk.com/app/1621/> if you intend to run that demo.
-Module 14 has no lab, so you can teach it as slides and skip the add-on.
+Module 14 covers the Common Information Model, which Splunk publishes as a
+Splunkbase add-on. **This course does not install it.** It ships two small
+data models of its own instead — `Harborview_Web` and
+`Harborview_Authentication` — already mapped onto CIM field names, so
+`| datamodel` and `| tstats` run on the class instance with nothing
+downloaded. Students learn the convention, which is the part that transfers
+to a production system.
 
 ---
 
@@ -90,7 +96,7 @@ docker load -i splunk-image.tar
 ```
 
 ```bash
-docker run -d -p 8000:8000 --platform linux/amd64 -e SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com -e SPLUNK_START_ARGS=--accept-license -e SPLUNK_PASSWORD=password --name splunk splunk/splunk:9.2.1
+docker run -d -p 8000:8000 --platform linux/amd64 -e SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com -e SPLUNK_START_ARGS=--accept-license -e SPLUNK_PASSWORD=password --name splunk splunk/splunk:10.4.3
 ```
 
 `SPLUNK_GENERAL_TERMS` is required — current images refuse to start without
@@ -245,6 +251,7 @@ Press **S** in any deck for speaker notes, **O** for the slide overview,
 | `tools/load_data.sh` | Creates indexes, installs `conf/`, ingests `data/` |
 | `tools/validate_labs.py` | Runs every lab search against a live Splunk |
 | `conf/` | Sourcetype properties, lookup definitions, app manifest |
+| `conf/models/` | CIM-aligned data models for Module 14 |
 | `tools/reveal/` | Vendored Reveal.js 4.3.1 (MIT) |
 
 Both generated directories are committed so the course works from a fresh
@@ -285,8 +292,11 @@ Labs 2 and 3 rely on those ranges, so keep them if you edit the generator.
   to 13 make sense.
 - **Lab 12 is the longest.** Budget accordingly, and have students build it in
   Search & Reporting, not the class app.
-- **Module 14 needs the CIM add-on** only for the `datamodel` and `tstats`
-  demonstrations. Everything else is slides.
+- **Module 14 needs nothing installed.** Its `datamodel` and `tstats`
+  demonstrations run against `Harborview_Web` and
+  `Harborview_Authentication`, which `tools/load_data.sh` installs. On a
+  production system you would point the same commands at the CIM add-on's
+  models instead.
 - Field *names* are case sensitive throughout Splunk; field *values* are not,
   except in `where` and in lookup matches. This trips up at least one student
   per class, which is why Lab 1 opens with it.

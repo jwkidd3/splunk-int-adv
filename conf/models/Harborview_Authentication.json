@@ -1,0 +1,137 @@
+{
+  "modelName": "Harborview_Authentication",
+  "displayName": "Harborview Authentication",
+  "description": "SSH authentication mapped onto CIM Authentication field names.",
+  "objectSummary": {
+    "Event-Based": 1,
+    "Transaction-Based": 0,
+    "Search-Based": 0
+  },
+  "objects": [
+    {
+      "objectName": "Authentication",
+      "displayName": "Authentication",
+      "parentName": "BaseEvent",
+      "comment": "",
+      "lineage": "Authentication",
+      "fields": [
+        {
+          "fieldName": "_time",
+          "owner": "Authentication",
+          "type": "timestamp",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "_time",
+          "comment": ""
+        },
+        {
+          "fieldName": "action",
+          "owner": "Authentication",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "action",
+          "comment": ""
+        },
+        {
+          "fieldName": "app",
+          "owner": "Authentication",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "app",
+          "comment": ""
+        },
+        {
+          "fieldName": "user",
+          "owner": "Authentication",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "user",
+          "comment": ""
+        },
+        {
+          "fieldName": "src_ip",
+          "owner": "Authentication",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "src_ip",
+          "comment": ""
+        },
+        {
+          "fieldName": "vendor_action",
+          "owner": "Authentication",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "vendor_action",
+          "comment": ""
+        }
+      ],
+      "calculations": [
+        {
+          "calculationID": "auth_src",
+          "owner": "Authentication",
+          "editable": true,
+          "comment": "",
+          "calculationType": "Eval",
+          "expression": "src_ip",
+          "outputFields": [
+            {
+              "fieldName": "src",
+              "owner": "Authentication",
+              "type": "string",
+              "required": false,
+              "multivalue": false,
+              "hidden": false,
+              "editable": true,
+              "displayName": "src",
+              "comment": ""
+            }
+          ]
+        },
+        {
+          "calculationID": "auth_dest",
+          "owner": "Authentication",
+          "editable": true,
+          "comment": "",
+          "calculationType": "Eval",
+          "expression": "host",
+          "outputFields": [
+            {
+              "fieldName": "dest",
+              "owner": "Authentication",
+              "type": "string",
+              "required": false,
+              "multivalue": false,
+              "hidden": false,
+              "editable": true,
+              "displayName": "dest",
+              "comment": ""
+            }
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "search": "index=security sourcetype=linux_secure vendor_action=*",
+          "owner": "Authentication"
+        }
+      ]
+    }
+  ]
+}

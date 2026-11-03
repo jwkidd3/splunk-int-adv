@@ -73,6 +73,15 @@ for csv in products.csv vendors.csv http_status.csv; do
   [ -f "$DATA/$csv" ] && docker cp "$DATA/$csv" "$CONTAINER:$APPDIR/lookups/$csv" >/dev/null
 done
 say "lookup CSVs -> apps/$APP/lookups/"
+# Module 14's datamodel and tstats demonstrations run against these rather
+# than the Splunkbase CIM add-on, so nothing has to be downloaded.
+if [ -d "$CONF/models" ]; then
+  docker exec -u splunk "$CONTAINER" mkdir -p "$APPDIR/local/data/models"
+  for m in "$CONF"/models/*.json; do
+    docker cp "$m" "$CONTAINER:$APPDIR/local/data/models/$(basename "$m")" >/dev/null
+  done
+  say "data models -> apps/$APP/local/data/models/"
+fi
 # Share the objects app-wide, or only the app's owner sees them - which is the
 # failure Lab 6 step 19 is about.
 docker exec -u splunk "$CONTAINER" bash -c "cat > $APPDIR/metadata/local.meta <<'META'
@@ -164,14 +173,24 @@ oneshot /tmp/coursedata/trailmate_beta.log  apps    trailmate_beta  appserver
 echo
 
 echo "Indexed event counts"
-# Counts taken straight after a oneshot report mid-ingest totals; settle first.
-for _ in $(seq 1 30); do
-  a=$(splunk_cmd search '| eventcount summarize=false index=web index=security index=sales index=network index=apps | stats sum(count) as n' -auth "$AUTH" -preview false | tail -1 | tr -dc '0-9')
-  sleep 4
-  b=$(splunk_cmd search '| eventcount summarize=false index=web index=security index=sales index=network index=apps | stats sum(count) as n' -auth "$AUTH" -preview false | tail -1 | tr -dc '0-9')
-  [ -n "$a" ] && [ "$a" = "$b" ] && break
+# Counts taken straight after a oneshot report mid-ingest totals. Two equal
+# readings is not enough: early on the indexes report 0 for several seconds
+# running, which looks stable and is wrong. Wait for three equal non-trivial
+# readings in a row.
+settled=0; last=""; same=0
+for _ in $(seq 1 60); do
+  n=$(splunk_cmd search '| metadata type=sourcetypes index=web index=security index=sales index=network index=apps | stats sum(totalCount) as n' -auth "$AUTH" -preview false | tail -1 | tr -dc '0-9')
+  if [ -n "$n" ] && [ "$n" -gt 1000 ] && [ "$n" = "$last" ]; then
+    same=$((same + 1))
+    [ "$same" -ge 2 ] && { settled=1; break; }
+  else
+    same=0
+  fi
+  last="$n"
+  sleep 3
 done
-splunk_cmd search '| eventcount summarize=false index=web index=security index=sales index=network index=apps | stats sum(count) as events by index' -auth "$AUTH" -preview false | sed 's/^/  /'
+[ "$settled" = 1 ] || say "(counts may still be settling)"
+splunk_cmd search '| metadata type=sourcetypes index=web index=security index=sales index=network index=apps | table sourcetype totalCount' -auth "$AUTH" -preview false | sed 's/^/  /'
 
 echo
 echo "Done. Indexes, sourcetype properties and the automatic lookups are all in"

@@ -1,0 +1,158 @@
+{
+  "modelName": "Harborview_Web",
+  "displayName": "Harborview Web",
+  "description": "Store traffic mapped onto CIM Web field names.",
+  "objectSummary": {
+    "Event-Based": 1,
+    "Transaction-Based": 0,
+    "Search-Based": 0
+  },
+  "objects": [
+    {
+      "objectName": "Web",
+      "displayName": "Web",
+      "parentName": "BaseEvent",
+      "comment": "",
+      "lineage": "Web",
+      "fields": [
+        {
+          "fieldName": "_time",
+          "owner": "Web",
+          "type": "timestamp",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "_time",
+          "comment": ""
+        },
+        {
+          "fieldName": "action",
+          "owner": "Web",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "action",
+          "comment": ""
+        },
+        {
+          "fieldName": "status",
+          "owner": "Web",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "status",
+          "comment": ""
+        },
+        {
+          "fieldName": "bytes",
+          "owner": "Web",
+          "type": "number",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "bytes",
+          "comment": ""
+        },
+        {
+          "fieldName": "product_name",
+          "owner": "Web",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "product_name",
+          "comment": ""
+        },
+        {
+          "fieldName": "categoryId",
+          "owner": "Web",
+          "type": "string",
+          "required": false,
+          "multivalue": false,
+          "hidden": false,
+          "editable": true,
+          "displayName": "categoryId",
+          "comment": ""
+        }
+      ],
+      "calculations": [
+        {
+          "calculationID": "web_src",
+          "owner": "Web",
+          "editable": true,
+          "comment": "",
+          "calculationType": "Eval",
+          "expression": "clientip",
+          "outputFields": [
+            {
+              "fieldName": "src",
+              "owner": "Web",
+              "type": "string",
+              "required": false,
+              "multivalue": false,
+              "hidden": false,
+              "editable": true,
+              "displayName": "src",
+              "comment": ""
+            }
+          ]
+        },
+        {
+          "calculationID": "web_method",
+          "owner": "Web",
+          "editable": true,
+          "comment": "",
+          "calculationType": "Eval",
+          "expression": "method",
+          "outputFields": [
+            {
+              "fieldName": "http_method",
+              "owner": "Web",
+              "type": "string",
+              "required": false,
+              "multivalue": false,
+              "hidden": false,
+              "editable": true,
+              "displayName": "http_method",
+              "comment": ""
+            }
+          ]
+        },
+        {
+          "calculationID": "web_uri",
+          "owner": "Web",
+          "editable": true,
+          "comment": "",
+          "calculationType": "Eval",
+          "expression": "uri_path",
+          "outputFields": [
+            {
+              "fieldName": "url",
+              "owner": "Web",
+              "type": "string",
+              "required": false,
+              "multivalue": false,
+              "hidden": false,
+              "editable": true,
+              "displayName": "url",
+              "comment": ""
+            }
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "search": "index=web sourcetype=access_combined",
+          "owner": "Web"
+        }
+      ]
+    }
+  ]
+}

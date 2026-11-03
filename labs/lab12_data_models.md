@@ -12,6 +12,11 @@ activity and has no intention of learning SPL.
 
 1. Go to **Settings > Data models** and click **New Data Model**.
 
+   > Two models are already listed, `Harborview_Web` and
+   > `Harborview_Authentication`. Those ship with the course and are what
+   > Module 14 demonstrates `datamodel` and `tstats` against. Leave them
+   > alone; you are building your own.
+
 2. Title: `Store Activity`. Leave the auto-filled ID alone — it cannot be
    blank. Set App to **Search & Reporting**. Click **Create**.
 
