@@ -9,8 +9,10 @@ right up until a student runs it in front of you. This runs them.
 
 What it deliberately does NOT flag:
 
-* Blocks that begin with a pipe. They are mid-pipeline fragments quoted to
-  show one step, and cannot run on their own.
+* Blocks that begin with a pipe, unless the pipe is followed by a generating
+  command. `| rest`, `| dbinspect`, `| tstats`, `| union` and friends are
+  complete searches; `| stats count by user` is a fragment quoted to show one
+  step and cannot run on its own.
 * Blocks with no `index=`. Those are config snippets - macro definitions,
   regexes, eval expressions, props - not searches.
 * Blocks containing a backtick macro or a `$token$`. They depend on objects
@@ -36,6 +38,12 @@ import textwrap
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FENCE = re.compile(r"```\n(.*?)```", re.S)
 
+# Commands that generate their own results, so a block starting with one is a
+# complete search rather than a mid-pipeline fragment.
+GENERATING = re.compile(
+    r"\|\s*(?:rest|dbinspect|datamodel|tstats|union|metadata|inputlookup|"
+    r"makeresults|eventcount|savedsearch|history|typeahead|from)\b")
+
 # Searches that are correctly empty: either until a student completes the lab,
 # or permanently because the lab is teaching why they fail. Keyed by lab
 # filename stem; the value is a marker identifying the block and the reason.
@@ -56,6 +64,11 @@ DEFERRED = {
                "aliases created in the supplemental task")],
     "lab09": [("tag=privileged",
                "tag created in Task 1")],
+    "lab13": [("| fields clientip] | stats count",
+               "deliberately unbounded - Task 4 shows it hitting the "
+               "10,000-row subsearch ceiling")],
+    "lab15": [("title=harborview_merch",
+               "role created in Task 2")],
 }
 
 
@@ -105,9 +118,10 @@ def runnable(body):
     """Is this a complete search we can execute as-is?"""
     if not body.strip():
         return None, "empty"
-    if body.lstrip().startswith("|") and not body.lstrip().startswith("| datamodel"):
+    lead = body.lstrip()
+    if lead.startswith("|") and not GENERATING.match(lead):
         return None, "fragment"
-    if "index=" not in body:
+    if "index=" not in body and not GENERATING.match(body.lstrip()):
         return None, "not a search"
     if "`" in body:
         return None, "needs a macro"

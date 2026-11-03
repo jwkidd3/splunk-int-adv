@@ -60,6 +60,10 @@ CONCEPTS = {
     "lab10": ["macro", "backtick", "argument", "Validation"],
     "lab11": ["workflow action", "GET", "POST", "search"],
     "lab12": ["data model", "root event", "child", "Pivot", "lookup"],
+    "lab13": ["subsearch", "dedup", "NOT", "10,000"],
+    "lab14": ["join", "append", "union", "stats"],
+    "lab15": ["role", "capabilit", "user"],
+    "lab16": ["Monitoring Console", "_internal", "_audit", "retention"],
 }
 
 fails, warns = [], []
