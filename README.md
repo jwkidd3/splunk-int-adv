@@ -155,12 +155,15 @@ tools/load_data.sh --with-data
 ### 5. One more lookup, for Lab 13
 
 Lab 13 needs a lookup the course does not create automatically. Upload
-`data/http_status.csv` into **Search & Reporting** and add a file-based lookup
-definition named exactly **`http_status_lookup`**. No automatic lookup — Lab 13
-wires it into a data model by hand.
+`data/hv_http_status.csv` into the **CLASS: Intermediate** app and add a
+file-based lookup definition named exactly **`hv_http_status_lookup`**. No
+automatic lookup — Lab 13 wires it into a data model by hand.
+
+It has to go in the same app as the data model that uses it. A lookup in
+Search & Reporting is invisible to a model built in the class app.
 
 Its columns are `code` and `description`, which is why Splunk's built-in
-`http_status.csv` will not do: that one uses `status` and `status_description`.
+`hv_http_status.csv` will not do: that one uses `status` and `status_description`.
 
 ### 6. Start the local endpoint, before Lab 12
 
@@ -254,8 +257,10 @@ Labs 2 and 3 rely on those ranges, so keep them if you edit the generator.
   the Job Inspector and say which phase is expensive.
 - **Lab 7 has no SPL** and is easy to rush. It is the lab that makes Modules 8
   to 13 make sense.
-- **Lab 13 is the longest.** Budget accordingly, and have students build it in
-  Search & Reporting, not the class app.
+- **Lab 13 is the longest.** Budget accordingly. Students build the data
+  model in the **CLASS: Intermediate** app: a data model only sees its own
+  app context, and the automatic lookups from Lab 1 live there. Built in
+  Search & Reporting it silently loses `product_name` and `categoryId`.
 - **Modules 15 to 18 are the advanced block.** They assume everything before
   them. Labs 16 and 17 are mostly UI and administration rather than SPL, and
   Lab 16 has students sign in as a restricted user they create — have them
@@ -286,7 +291,7 @@ Labs 2 and 3 rely on those ranges, so keep them if you edit the generator.
 - **Install the course config into its own app, not `etc/system/local`.**
   System-level configuration is shadowed by any app defining the same object.
   On a shared training instance that is a real collision: another course's
-  `products_lookup` will silently win, and your searches will enrich with its
+  `hv_products_lookup` will silently win, and your searches will enrich with its
   data instead of yours.
 
 ## Licence

@@ -5,8 +5,10 @@
 **Scenario:** the VP of Sales wants to answer her own questions about store
 activity and has no intention of learning SPL.
 
-> Build this in **Search & Reporting**, not the class app. Power users have
-> read-only permissions on data models in most app contexts.
+> Build this in the **CLASS: Intermediate** app. The automatic lookups you
+> created in Lab 1 live there, and a data model only sees what its own app
+> context provides — build it in Search & Reporting and `product_name` and
+> `categoryId` will not appear in the field list at all.
 
 ## Task 1 — The root event dataset
 
@@ -18,7 +20,7 @@ activity and has no intention of learning SPL.
    > alone; you are building your own.
 
 2. Title: `Store Activity`. Leave the auto-filled ID alone — it cannot be
-   blank. Set App to **Search & Reporting**. Click **Create**.
+   blank. Set App to **CLASS: Intermediate**. Click **Create**.
 
 3. Click **Add Dataset > Root Event**.
 
@@ -54,7 +56,7 @@ activity and has no intention of learning SPL.
 9. Save.
 
 10. `product_name` and `categoryId` are not in the raw log — they come from the
-    `products.csv` automatic lookup. Why do they show up in the
+    `hv_products.csv` automatic lookup. Why do they show up in the
     Auto-Extracted list anyway? ______________________
 
 ## Task 3 — Child datasets
@@ -121,7 +123,7 @@ activity and has no intention of learning SPL.
 
 31. With `Web requests` selected, click **Add Field > Lookup**.
 
-32. Choose `http_status_lookup` from the Lookup Table list.
+32. Choose `hv_http_status_lookup` from the Lookup Table list.
 
 33. Input: **Field in Lookup** = `code`, **Field in Dataset** = `status`.
 

@@ -139,28 +139,37 @@ the file you uploaded.
 Two CSVs turn identifiers into things a person recognises. Without them, half
 the later labs return product codes instead of product names.
 
+> **Why everything here starts `hv_`.** If you took Fundamentals on this same
+> Splunk instance, you already have a `products.csv` and a `products_lookup`
+> from its lookup lab — holding Buttercup Games data, not Harborview's. The
+> two catalogues use the same column names and overlapping `Code` values, so
+> a collision would not fail; it would quietly return *Mediocre Kingdoms*
+> where you expect *Cirrus 2P Tent*. Prefixing this course's objects makes
+> that impossible. It is also the naming convention Module 7 argues for,
+> applied to a real problem.
+
 17. Go to **Settings → Lookups → Lookup table files** and click **New Lookup
     Table File**.
 
-18. Upload `data/products.csv` into the **CLASS: Intermediate** app, with
-    destination filename `products.csv`. Repeat for `data/vendors.csv`.
+18. Upload `data/hv_products.csv` into the **CLASS: Intermediate** app, with
+    destination filename `hv_products.csv`. Repeat for `data/hv_vendors.csv`.
 
 19. Go to **Lookup definitions** and click **New Lookup Definition**. Create
     two, both **File-based**:
 
     | Name | File |
     | ---- | ---- |
-    | `products_lookup` | `products.csv` |
-    | `vendors_lookup` | `vendors.csv` |
+    | `hv_products_lookup` | `hv_products.csv` |
+    | `hv_vendors_lookup` | `hv_vendors.csv` |
 
 20. Go to **Automatic lookups** and click **New Automatic Lookup**. Create
     three:
 
     | Lookup table | Apply to sourcetype | Input | Output |
     | ------------ | ------------------- | ----- | ------ |
-    | `products_lookup` | `access_combined` | `productId` | `product_name`, `categoryId`, `price` |
-    | `products_lookup` | `vendor_sales` | `Code` | `product_name`, `categoryId`, `price` |
-    | `vendors_lookup` | `vendor_sales` | `VendorID` | `Vendor`, `VendorCity`, `VendorStateProvince`, `VendorCountry`, `Weight` |
+    | `hv_products_lookup` | `access_combined` | `productId` | `product_name`, `categoryId`, `price` |
+    | `hv_products_lookup` | `vendor_sales` | `Code` | `product_name`, `categoryId`, `price` |
+    | `hv_vendors_lookup` | `vendor_sales` | `VendorID` | `Vendor`, `VendorCity`, `VendorStateProvince`, `VendorCountry`, `Weight` |
 
 21. Set the permissions on each to **This app only**, readable by everyone.
 

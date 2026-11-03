@@ -136,9 +136,11 @@ awk '/^# ---- props.conf ----/{f=1;next} /^# ---- transforms.conf ----/{f=0;next
 awk '/^# ---- props.conf ----/{f=1;next} f' \
   "$CONF/instructor_lookups.conf" > /tmp/cp.conf
 docker cp /tmp/ct.conf "$CONTAINER:$APPDIR/local/transforms.conf" >/dev/null
-docker exec -u splunk "$CONTAINER" bash -c "cat >> $APPDIR/local/props.conf" < /tmp/cp.conf
+# -i matters: without it docker exec does not forward stdin, so the append
+# silently writes nothing and the automatic lookups never get configured.
+docker exec -i -u splunk "$CONTAINER" bash -c "cat >> $APPDIR/local/props.conf" < /tmp/cp.conf
 rm -f /tmp/ct.conf /tmp/cp.conf
-for csv in products.csv vendors.csv http_status.csv; do
+for csv in hv_products.csv hv_vendors.csv hv_http_status.csv; do
   [ -f "$DATA/$csv" ] && docker cp "$DATA/$csv" "$CONTAINER:$APPDIR/lookups/$csv" >/dev/null
 done
 docker exec -u root "$CONTAINER" chown -R splunk:splunk "$APPDIR" 2>/dev/null || true

@@ -27,8 +27,8 @@ Output (see README for the index/sourcetype each one loads into):
     data/web_proxy.json                 network  web_proxy
     data/firewall.json                  network  firewall
     data/trailmate_beta.log             apps     trailmate_beta
-    data/products.csv                   lookup
-    data/vendors.csv                    lookup
+    data/hv_products.csv                   lookup
+    data/hv_vendors.csv                    lookup
 
 Deterministic for a given --seed, so every student gets identical data.
 Standard library only.
@@ -216,7 +216,7 @@ def client_ips(rng, n):
 # --------------------------------------------------------------------------
 
 def write_products(out):
-    path = os.path.join(out, "products.csv")
+    path = os.path.join(out, "hv_products.csv")
     with open(path, "w", newline="") as fh:
         fh.write("productId,product_name,categoryId,price,Code\n")
         for pid, name, cat, price, code in PRODUCTS:
@@ -247,7 +247,7 @@ def build_vendors(rng):
 
 
 def write_vendors(out, vendors):
-    path = os.path.join(out, "vendors.csv")
+    path = os.path.join(out, "hv_vendors.csv")
     cols = ["Vendor", "VendorCity", "VendorID", "VendorStateProvince",
             "VendorCountry", "Weight"]
     with open(path, "w", newline="") as fh:
@@ -517,8 +517,8 @@ def main():
 
     vendors = build_vendors(rng)
     results = [
-        ("products.csv", write_products(args.out), len(PRODUCTS)),
-        ("vendors.csv", write_vendors(args.out, vendors), len(vendors)),
+        ("hv_products.csv", write_products(args.out), len(PRODUCTS)),
+        ("hv_vendors.csv", write_vendors(args.out, vendors), len(vendors)),
     ]
     for label, (path, n) in [
         ("access.zip", write_access(args.out, rng, now, args.days, 4200)),

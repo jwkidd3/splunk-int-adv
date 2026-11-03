@@ -93,9 +93,9 @@ MODULES = [
       ["<code>network</code>", "<code>web_proxy</code>", "Employee web traffic"],
       ["<code>network</code>", "<code>firewall</code>", "Firewall sessions"],
       ["<code>apps</code>", "<code>trailmate_beta</code>", "Mobile app beta telemetry"]]),
-    ("note", "Two lookups enrich this data: <code>products.csv</code> supplies "
+    ("note", "Two lookups enrich this data: <code>hv_products.csv</code> supplies "
              "<code>product_name</code>, <code>categoryId</code> and <code>price</code>; "
-             "<code>vendors.csv</code> supplies <code>VendorCountry</code> and "
+             "<code>hv_vendors.csv</code> supplies <code>VendorCountry</code> and "
              "<code>VendorStateProvince</code>.")]},
 
   {"type": "lab", "lab": "Lab 1", "h": "Loading the Course Data",

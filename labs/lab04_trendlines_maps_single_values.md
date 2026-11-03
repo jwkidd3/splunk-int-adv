@@ -40,7 +40,7 @@ Five visualizations, five saved reports: L4S1 through L4S5.
    | timechart span=1d count
    ```
 
-   > `categoryId` arrives from the `products.csv` lookup, so the value is case
+   > `categoryId` arrives from the `hv_products.csv` lookup, so the value is case
    > sensitive. Type `TENTS` in uppercase.
 
 8. Change the visualization to **Single Value** and set:
