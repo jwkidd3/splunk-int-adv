@@ -129,6 +129,67 @@ Five visualizations, five saved reports: L4S1 through L4S5.
 
 25. Save as **L4S5**.
 
+## The saved searches
+
+Each report as it stands at the moment you save it, assembled from the steps
+that build it. Useful for checking a student's screen, or for picking the lab
+up in the middle.
+
+<details>
+<summary>Expand after attempting.</summary>
+
+**L4S1** — step 6, **Last 7 days**
+
+```
+index=security sourcetype=linux_secure "Failed password"
+| timechart span=1d count as failures
+| trendline sma5(failures) as trend
+```
+
+> Line chart.
+
+**L4S2** — step 9, **Last 7 days**
+
+```
+index=sales sourcetype=vendor_sales categoryId="TENTS"
+| timechart span=1d count
+```
+
+> Single value, with trend indicator, sparkline, and background colour by
+> trend.
+
+**L4S3** — step 16, **Last 7 days**
+
+```
+index=sales sourcetype=vendor_sales VendorID<3000
+| chart count over VendorStateProvince
+| geom geo_us_states featureIdField=VendorStateProvince
+```
+
+> Choropleth map.
+
+**L4S4** — step 21, **Last 7 days**
+
+```
+index=web sourcetype=access_combined action=purchase status=200
+| iplocation clientip
+| geostats count by Country
+```
+
+> Cluster map.
+
+**L4S5** — step 25, **Last 24 hours**
+
+```
+index=sales sourcetype=vendor_sales
+| stats count as "Units Sold" by VendorCountry
+| addtotals col=t row=f labelfield=VendorCountry label="Total"
+```
+
+> Statistics table. The total is the last row of the last page.
+
+</details>
+
 ## Answers
 
 <details>

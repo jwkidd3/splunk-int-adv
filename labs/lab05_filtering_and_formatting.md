@@ -121,6 +121,72 @@
 
 22. Save as **L5C1**.
 
+## The saved searches
+
+Each report as it stands at the moment you save it, assembled from the steps
+that build it. Useful for checking a student's screen, or for picking the lab
+up in the middle.
+
+<details>
+<summary>Expand after attempting.</summary>
+
+**L5S1** — step 6, **Last 7 days**
+
+```
+index=web sourcetype=access_combined
+| timechart span=1d sum(bytes) as bytes
+| eval MB = round(bytes/1048576, 2)
+| fields - bytes
+```
+
+> Line chart, X axis labelled Day.
+
+**L5S2** — step 10, **Last 24 hours**
+
+```
+index=web sourcetype=access_combined
+| chart count over host by method
+| eval Ratio = round(GET/POST, 2)
+```
+
+**L5S3** — step 14, **Last 24 hours**
+
+```
+index=security sourcetype=linux_secure "Failed password"
+| stats count by user
+| search count > 3
+| sort - count
+```
+
+> `where count > 3` is equally correct here; step 13 is about what happens
+> when you change the case of `count`.
+
+**L5S4** — step 18, **Last 24 hours**
+
+```
+index=web sourcetype=access_combined
+| eval dataSize = case(bytes < 2000,  "Small",
+                       bytes < 2500,  "Medium",
+                       bytes < 3000,  "Large",
+                       true(),        "Extra Large")
+| stats count by dataSize
+```
+
+> Pie chart.
+
+**L5C1** — step 22, **Last 7 days**
+
+```
+index=network sourcetype=web_proxy
+| stats count by http_content_type
+| eval type = if(like(http_content_type, "image%"), "graphic", "other")
+| stats sum(count) as total by type
+```
+
+> Pie chart.
+
+</details>
+
 ## Answers
 
 <details>

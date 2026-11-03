@@ -155,6 +155,79 @@ account belongs to. The firewall data knows departments. It calls the account
     | Stack two result sets into one table | |
     | Same question asked of several indexes | |
 
+## The saved searches
+
+Each report as it stands at the moment you save it, assembled from the steps
+that build it. Useful for checking a student's screen, or for picking the lab
+up in the middle.
+
+<details>
+<summary>Expand after attempting.</summary>
+
+**L15S1** — step 4, **Last 30 days**
+
+```
+index=web sourcetype=access_combined action=purchase
+| join productId
+    [search index=sales sourcetype=sales_entries
+     | stats sum(total) as revenue by productId]
+| stats count as checkouts, values(revenue) as revenue by productId
+```
+
+**L15S2** — step 8, **Last 30 days**
+
+```
+index=security sourcetype=linux_secure vendor_action=Failed
+| join type=left user
+    [search index=network sourcetype=firewall
+     | rename Username as user
+     | stats values(Department) as dept by user]
+| stats count by user, dept
+| sort - count
+```
+
+> `type=left` kept, as step 7 concludes it should be.
+
+**L15S3** — step 11, **Last 30 days**
+
+```
+index=web sourcetype=access_combined status>=500
+| stats count as errors by host
+| append
+    [search index=network sourcetype=web_proxy sc_http_status>=500
+     | rename s_hostname as host
+     | stats count as errors by host]
+```
+
+> With the `rename` from step 10, so there is one `host` column rather than
+> two.
+
+**L15S4** — step 14, **Last 30 days**
+
+```
+| union
+    [search index=web sourcetype=access_combined status>=500
+     | stats count as errors by sourcetype]
+    [search index=network sourcetype=web_proxy sc_http_status>=500
+     | stats count as errors by sourcetype]
+```
+
+> The leading pipe is required: `union` generates its own results.
+
+**L15S5** — step 18, **Last 30 days**
+
+```
+(index=web sourcetype=access_combined action=purchase)
+    OR (index=sales sourcetype=sales_entries)
+| stats count(eval(sourcetype=="access_combined")) as checkouts,
+        sum(total) as revenue
+        by productId
+```
+
+> The parentheses are load-bearing - see the note on step 15.
+
+</details>
+
 ## Answers
 
 <details>
@@ -182,14 +255,14 @@ commands always come first.
 
 | Search | Elapsed | scanCount |
 | ------ | ------- | --------- |
-| L15S1 (`join`) | 0.119s | 2,116 |
-| Step 15 (`stats`) | 0.056s | 6,356 |
+| L15S1 (`join`) | 0.169s | 2,115 |
+| Step 15 (`stats`) | 0.082s | 6,348 |
 
 Read those scan figures carefully, because taken at face value they say the
 opposite of the truth. `join` reports only what its **outer** search read. The
-subsearch is a separate job, and it scanned another 4,239 events — and
-2,116 + 4,239 is the 6,356 that the `stats` version reports honestly, in one
-number.
+subsearch is a separate job, and it scanned another 4,233 events — and
+2,115 + 4,233 is exactly the 6,348 that the `stats` version reports honestly,
+in one number.
 
 The `join` did not do less work. It did the same work and told you about less
 of it. This is worth remembering the next time a `join` looks cheap in the

@@ -106,6 +106,56 @@
 20. Name one thing `transaction` gave you here that `stats` did not.
     ______________________
 
+## The saved searches
+
+Each report as it stands at the moment you save it, assembled from the steps
+that build it. Useful for checking a student's screen, or for picking the lab
+up in the middle.
+
+<details>
+<summary>Expand after attempting.</summary>
+
+**L6S1** — step 7, **Last 24 hours**
+
+```
+index=web sourcetype=access_combined action=*
+| transaction JSESSIONID
+| table JSESSIONID, clientip, action
+| search action=purchase
+```
+
+> The `search` comes after `transaction`, as step 6 warns. Before it, you
+> would filter away the view and cart events the session is made of.
+
+**L6S2** — step 12, **Last 24 hours**
+
+```
+index=web sourcetype=access_combined action=*
+| transaction JSESSIONID
+| search action=purchase
+| eval durationMinutes = round(duration/60, 1)
+| where durationMinutes > 1
+| table JSESSIONID, clientip, action, durationMinutes, eventcount
+```
+
+> Step 11's `table` replaces the one from step 9 rather than adding to it:
+> `duration` only has to survive as far as the `eval`.
+
+**L6S3** — step 16, **Last 24 hours**
+
+```
+index=web sourcetype=access_combined
+| transaction clientip
+    startswith=(action="addtocart")
+    endswith=(action="purchase")
+    maxspan=30m maxpause=10m
+| table clientip, JSESSIONID, product_name, action, duration, eventcount
+```
+
+> The constrained version, with `maxspan` and `maxpause` kept.
+
+</details>
+
 ## Answers
 
 <details>
@@ -126,12 +176,13 @@ or use `list()` with `stats`, which preserves input order.
 **Step 9** — ```
 index=web sourcetype=access_combined action=*
 | transaction JSESSIONID
-| search action=purchase
 | table JSESSIONID, clientip, duration, eventcount, action
+| search action=purchase
 ```
 
 `duration` and `eventcount` are added by `transaction` itself, so they are
-available to `table` without any `eval`.
+available to `table` without any `eval`. The two new columns go between
+`clientip` and `action`, which is what "after `clientip`" asks for.
 
 **Step 11** — ```
 index=web sourcetype=access_combined action=*
@@ -142,8 +193,9 @@ index=web sourcetype=access_combined action=*
 | table JSESSIONID, clientip, action, durationMinutes, eventcount
 ```
 
-The `table` has to come last. Put it before the `where` and you drop
-`duration`, leaving nothing for the comparison to filter on.
+This `table` replaces the one from step 9 rather than adding to it: you are
+displaying `durationMinutes` now, and `duration` only has to survive as far as
+the `eval`.
 
 **Step 14** — ```
 index=web sourcetype=access_combined
@@ -161,13 +213,13 @@ in Lab 1. If the column is empty, that lookup is the thing to go and check.
 and again on Friday becomes a single transaction lasting days. The constraints
 are what make a "session" mean anything.
 
-**Step 18** — Both return the same 34 sessions, and both scan the same 487 events. Measured
+**Step 18** — Both return the same 33 sessions, and both scan the same 480 events. Measured
 runs sat within a few hundredths of a second of each other.
 
 | Search | Elapsed | scanCount |
 | ------ | ------- | --------- |
-| L6S1 (`transaction`) | 0.045s | 487 |
-| Step 17 (`stats`) | 0.042s | 487 |
+| L6S1 (`transaction`) | 0.104s | 480 |
+| Step 17 (`stats`) | 0.091s | 480 |
 
 So this is not a speed argument, and you should not make one. `stats` wins
 because it *streams*: it keeps one running row per `JSESSIONID` and emits as

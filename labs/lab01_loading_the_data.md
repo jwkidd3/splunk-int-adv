@@ -113,23 +113,23 @@ the file you uploaded.
     | `data/firewall.json` | `firewall` | `network` | `firewall` |
     | `data/trailmate_beta.log` | `trailmate_beta` | `apps` | `appserver` |
 
-14. Five of these sourcetypes are not in Splunk's built-in list, so the Set
-    Source Type screen will not offer them. You create each one the same way
-    you would in Fundamentals Lab 1: on the **Set Source Type** screen, click
-    **Save As** beside the source type, and fill in the modal.
+14. **Select** each sourcetype on the **Set Source Type** screen — do not
+    create it. All seven are already in the list: `access_combined` and
+    `linux_secure` are Splunk's own, and the five course sourcetypes are
+    under **Custom** because the class app defines them. Type the name into
+    the dropdown's filter box to find it, check the preview updates, then
+    **Next**.
 
-    | Field | Value |
-    | ----- | ----- |
-    | Name | the sourcetype from the table above, spelled exactly |
-    | Description | a short note, e.g. `Employee web proxy traffic` |
-    | Category | `Custom` |
-    | App | `CLASS: Intermediate` |
-
-    Click **Save**, check the preview updates, then **Next**.
-
-    > Spelling matters and nothing warns you. `web_proxy` picks up the
-    > parsing rules your instructor installed; `webproxy` creates a different
-    > sourcetype with none, and Lab 9 returns nothing with no explanation.
+    > **Do not use Save As here**, even though Fundamentals Lab 1 has you
+    > create a sourcetype that way. There it is the only option. Here the
+    > sourcetype already exists, and creating a second definition of the same
+    > name does real damage to the three JSON sources: the UI bases a new
+    > JSON sourcetype on `_json`, which carries `INDEXED_EXTRACTIONS = json`,
+    > and index-time extraction then runs alongside the `KV_MODE = json` the
+    > class app already sets. Every field ends up holding two identical
+    > values. Nothing errors — `sc_http_status>=500` just matches nothing,
+    > and `sum(total)` returns exactly twice the revenue. Task 5 checks for
+    > this.
 
 15. `secure.zip` unpacks to **four** directories, not three — there is a mail
     server as well as the three web servers. Confirm after loading:
@@ -244,6 +244,19 @@ the later labs return product codes instead of product names.
     parsed and Splunk fell back to upload time. What would that break?
     ______________________
 
+27. Confirm the three JSON sources extracted their fields once rather than
+    twice:
+
+    ```
+    index=network sourcetype=web_proxy
+    | head 1
+    | eval copies = mvcount(sc_http_status)
+    | table sc_http_status, copies
+    ```
+
+    `copies` has to be **1**. Repeat it for `sales_entries` with `total`, and
+    for `firewall` with `bytes_out`.
+
 ## Answers
 
 <details>
@@ -276,5 +289,19 @@ not applied".
 specifies a time range, so a source stamped at upload time appears for a few
 minutes and then falls outside every window. It is also nearly invisible:
 the data is there, the searches are right, and the results are empty.
+
+**Step 27** — 1 for all three.
+
+A 2 means the sourcetype has a second definition performing index-time
+extraction on top of the class app's search-time `KV_MODE = json`, which is
+what **Save As** produces for a JSON source — see step 14. Every field then
+holds two identical values, and nothing reports an error. `sc_http_status>=500`
+matches nothing at all, and `sum(total)` returns exactly twice the revenue, so
+Labs 9 and 15 would give confident wrong answers.
+
+Fix it rather than working around it. Find the extra definition under
+**Settings → Source types**, or in `etc/system/local/props.conf` and the
+class app's `local/props.conf`. Delete it, then delete and reload that
+file's events — index-time extraction cannot be undone by a search.
 
 </details>

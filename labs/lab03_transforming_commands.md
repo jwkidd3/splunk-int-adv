@@ -123,6 +123,58 @@ VendorID ranges carry meaning:
 > Formatting choices persist between searches. If your next chart appears
 > trellised for no reason, that is why — turn it off in the Trellis tab.
 
+## The saved searches
+
+Each report as it stands at the moment you save it, assembled from the steps
+that build it. Useful for checking a student's screen, or for picking the lab
+up in the middle.
+
+<details>
+<summary>Expand after attempting.</summary>
+
+**L3S1** — step 6, **Last 7 days**
+
+```
+index=security sourcetype=linux_secure NOT "session opened"
+| chart count over src_ip by vendor_action
+| addtotals
+| sort - Total
+| head 10
+| fields - Total
+```
+
+> Stacked column chart.
+
+**L3S2** — step 16, **Last 7 days**
+
+```
+index=sales sourcetype=vendor_sales VendorID<4000
+| chart count over VendorCountry by product_name limit=5 useother=f
+```
+
+> Column chart, Y axis on a log scale.
+
+**L3S3** — step 19, **Last 24 hours**
+
+```
+index=network sourcetype=web_proxy
+| timechart count by usage
+```
+
+> Line chart.
+
+**L3S4** — step 22, **Last 24 hours**
+
+```
+index=network sourcetype=web_proxy
+| timechart count by usage
+```
+
+> The same SPL as L3S3. Only the display differs - Trellis on, Scale
+> Independent - which is saved with the report, not with the search.
+
+</details>
+
 ## Answers
 
 <details>

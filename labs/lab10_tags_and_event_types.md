@@ -102,10 +102,10 @@ Last 7 days, and comparing across two windows tells you nothing. Over
 
 | Search | scanCount | resultCount |
 | ------ | --------- | ----------- |
-| `user=*admin*` | 526 | 251 |
-| `tag=privileged` | 251 | 251 |
+| `user=*admin*` | 525 | 250 |
+| `tag=privileged` | 250 | 250 |
 
-Same five accounts, same 251 events. The wildcard makes Splunk read 526 events
+Same five accounts, same 250 events. The wildcard makes Splunk read 525 events
 and throw half of them away. The tag resolves to five exact `user` values it
 can look up in the index, so every event it reads is one it keeps — which is
 what `scanCount` equalling `resultCount` means.

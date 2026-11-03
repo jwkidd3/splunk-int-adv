@@ -145,6 +145,64 @@ runs against a truncated list.
     | Correlate two sources field by field | | |
     | Filter by a list of 50,000 accounts | | |
 
+## The saved searches
+
+Each report as it stands at the moment you save it, assembled from the steps
+that build it. Useful for checking a student's screen, or for picking the lab
+up in the middle.
+
+<details>
+<summary>Expand after attempting.</summary>
+
+**L14S1** — step 6, **Last 30 days**
+
+```
+index=web sourcetype=access_combined action=purchase status=200
+    [search index=web sourcetype=access_combined status>=500
+     | fields clientip
+     | dedup clientip]
+| stats count by clientip
+```
+
+**L14S2** — step 11, **Last 30 days**
+
+```
+index=security sourcetype=linux_secure vendor_action=Failed
+    NOT [search index=security sourcetype=linux_secure vendor_action=Accepted
+         | fields user
+         | dedup user]
+| stats count by user
+| sort - count
+```
+
+**L14S3** — step 15, **Last 30 days**
+
+```
+index=web sourcetype=access_combined
+    [search index=web sourcetype=access_combined status=503
+     | dedup productId
+     | return 5 productId]
+| stats count by productId
+```
+
+> The `return` version from step 12. Step 13's `fields productId` variant
+> gives the same rows and a different rewritten search.
+
+**L14S4** — step 19, **Last 30 days**
+
+```
+index=web sourcetype=access_combined
+    [search index=web sourcetype=access_combined status>=500
+     | fields clientip
+     | dedup clientip
+     | head 100]
+| stats count
+```
+
+> The fixed version, not the broad one from step 16.
+
+</details>
+
 ## Answers
 
 <details>

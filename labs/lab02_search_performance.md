@@ -167,14 +167,14 @@ with no filter, against 413 and 413 with it. Both numbers fall together,
 because the filter values are searchable terms and the index can narrow on
 them directly.
 
-**Step 4** — Over **Last 7 days**: `scanCount` 4,718 and `resultCount` 4,718.
+**Step 4** — Over **Last 7 days**: `scanCount` 4,709 and `resultCount` 4,709.
 
 With no filter beyond the sourcetype, every event read is an event returned.
 
-**Step 5** — `scanCount` 417 and `resultCount` 417 — about eleven times less than step 4.
+**Step 5** — `scanCount` 416 and `resultCount` 416 — about eleven times less than step 4.
 
 Both numbers fall together, and that is the tell. Splunk used the index to
-find the 417 matching events rather than reading 4,718 and discarding most of
+find the 416 matching events rather than reading 4,709 and discarding most of
 them.
 
 **Step 6** — Identical. Around 413 either way. This surprises most people, and
@@ -195,7 +195,7 @@ late filter for you, and it cannot fix anything it cannot see through. Write
 the filter into the base search and you never have to work out which case you
 are in.
 
-**Step 9** — `scanCount` is 4,718 in all three modes. The mode changes how much field
+**Step 9** — `scanCount` is 4,709 in all three modes. The mode changes how much field
 extraction Splunk does per event, not how much data it reads, so read
 `runDuration` and ignore the scan.
 
@@ -206,8 +206,8 @@ like Verbose; add a `| stats` and it behaves like Fast. Measured over
 
 | Search | Verbose | Fast | Smart |
 | ------ | ------- | ---- | ----- |
-| `index=web sourcetype=access_combined` | 0.262s | 0.061s | 0.124s |
-| the same, plus `\| stats count by host` | 0.141s | 0.059s | 0.050s |
+| `index=web sourcetype=access_combined` | 0.335s | 0.064s | 0.134s |
+| the same, plus `\| stats count by host` | 0.155s | 0.088s | 0.060s |
 
 Absolute timings move from run to run; the pattern does not. Smart tracks
 Verbose on the first row and Fast on the second.

@@ -139,9 +139,13 @@ Two things to watch while they work:
   server, and the host comes from **Segment in path 2**. Get it wrong and
   every event lands with the host `access.zip`, which the lab's verification
   step catches.
-- **Sourcetype spelling.** Only `access_combined` and `linux_secure` are in
-  Splunk's built-in list; the other five are typed in by hand. A typo creates
-  a new sourcetype with no parsing rules and no warning.
+- **Sourcetypes are selected, not created.** The class app declares all five
+  course sourcetypes with `pulldown_type`, so they appear in Set Source Type
+  under **Custom**. Students who reach for **Save As** anyway create a second
+  definition of the same name, and for the three JSON sources the UI bases it
+  on `_json` — which adds `INDEXED_EXTRACTIONS = json` on top of the app's
+  `KV_MODE = json`. Every field then holds two copies, `sc_http_status>=500`
+  matches nothing and `sum(total)` doubles. Lab 1 step 27 checks for it.
 
 To reach the same end state yourself — for validating the course, or for a
 student whose instance has gone wrong past rescuing:
